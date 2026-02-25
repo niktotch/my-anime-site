@@ -2,1824 +2,804 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>AniStream — Смотреть аниме онлайн</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>AniStream</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800;900&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800;900&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0b0c12;
-  --bg2: #111219;
-  --bg3: #181920;
-  --card: #15161f;
-  --card-hover: #1c1d29;
-  --accent: #e63946;
-  --accent2: #457b9d;
-  --accent-glow: rgba(230,57,70,0.3);
-  --blue: #4361ee;
-  --purple: #7b2d8b;
-  --text: #e8e8f0;
-  --text2: #a0a0b8;
-  --text3: #606078;
-  --gold: #ffd700;
-  --green: #06d6a0;
-  --border: rgba(255,255,255,0.06);
-  --radius: 12px;
-  --radius-sm: 8px;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{
-  font-family:'Nunito',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  overflow-x:hidden;
-}
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-track{background:var(--bg2);}
-::-webkit-scrollbar-thumb{background:var(--accent);border-radius:4px;}
+:root{--bg:#0a0b10;--bg2:#10111a;--bg3:#16172000;--card:#131420;--card2:#1a1b2a;--ch:#1e1f30;--acc:#e63946;--accdim:rgba(230,57,70,.14);--blue:#4cc9f0;--gold:#fbbf24;--green:#34d399;--org:#fb923c;--txt:#eef0f8;--txt2:#8b8daa;--txt3:#4a4c65;--bdr:rgba(255,255,255,.06);--bdr2:rgba(255,255,255,.1);--r:12px;--rs:8px;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Mulish',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;}
+img{display:block;}button{cursor:pointer;border:none;background:none;font-family:inherit;}
+::-webkit-scrollbar{width:3px;height:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:3px;}
 
 /* NAV */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:1000;
-  background:rgba(11,12,18,0.9);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  height:56px;
-  display:flex;align-items:center;
-  padding:0 16px;gap:12px;
-}
-.nav-logo{
-  font-family:'Exo 2',sans-serif;
-  font-weight:900;font-size:20px;
-  color:var(--accent);letter-spacing:-0.5px;
-  flex-shrink:0;cursor:pointer;
-  text-decoration:none;
-}
-.nav-logo span{color:var(--text);}
-.nav-search{
-  flex:1;
-  display:flex;align-items:center;
-  background:var(--bg3);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:0 12px;gap:8px;
-  max-width:400px;
-}
-.nav-search input{
-  background:none;border:none;outline:none;
-  color:var(--text);font-family:'Nunito',sans-serif;
-  font-size:14px;width:100%;padding:8px 0;
-}
-.nav-search input::placeholder{color:var(--text3);}
-.nav-search svg{color:var(--text3);flex-shrink:0;}
-.nav-links{
-  display:flex;gap:4px;margin-left:auto;flex-shrink:0;
-}
-.nav-link{
-  color:var(--text2);font-size:13px;font-weight:600;
-  padding:6px 10px;border-radius:6px;cursor:pointer;
-  transition:all 0.2s;border:none;background:none;
-  font-family:'Nunito',sans-serif;
-  white-space:nowrap;
-}
-.nav-link:hover,.nav-link.active{color:var(--accent);background:rgba(230,57,70,0.1);}
-.settings-btn{
-  width:36px;height:36px;border-radius:8px;
-  background:var(--bg3);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:var(--text2);flex-shrink:0;
-  transition:all 0.2s;
-}
-.settings-btn:hover{color:var(--accent);border-color:var(--accent);}
-
-/* MAIN */
-main{padding-top:56px;min-height:100vh;}
-.page{display:none;}
-.page.active{display:block;}
-
-/* SECTIONS */
-.section{padding:24px 16px;}
-.section-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:16px;
-}
-.section-title{
-  font-family:'Exo 2',sans-serif;
-  font-size:18px;font-weight:800;
-  display:flex;align-items:center;gap:8px;
-}
-.section-title::before{
-  content:'';display:block;
-  width:4px;height:20px;background:var(--accent);
-  border-radius:2px;
-}
-.see-all{
-  color:var(--accent);font-size:13px;font-weight:600;
-  cursor:pointer;opacity:0.8;
-}
-.see-all:hover{opacity:1;}
-
-/* HERO */
-.hero{
-  position:relative;height:280px;overflow:hidden;
-  margin-bottom:0;
-}
-.hero-slides{position:relative;width:100%;height:100%;}
-.hero-slide{
-  position:absolute;inset:0;
-  opacity:0;transition:opacity 0.7s ease;
-  cursor:pointer;
-}
-.hero-slide.active{opacity:1;}
-.hero-img{
-  width:100%;height:100%;object-fit:cover;
-  object-position:center top;
-}
-.hero-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to top, var(--bg) 0%, rgba(11,12,18,0.5) 50%, transparent 100%);
-}
-.hero-content{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:16px;
-}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:var(--accent);color:#fff;
-  font-size:11px;font-weight:700;letter-spacing:0.5px;
-  padding:4px 8px;border-radius:4px;margin-bottom:8px;
-  text-transform:uppercase;
-}
-.hero-title{
-  font-family:'Exo 2',sans-serif;
-  font-size:20px;font-weight:800;
-  line-height:1.2;margin-bottom:6px;
-  text-shadow:0 2px 8px rgba(0,0,0,0.8);
-}
-.hero-meta{
-  display:flex;align-items:center;gap:12px;
-  font-size:12px;color:var(--text2);
-}
-.hero-dots{
-  position:absolute;bottom:12px;right:16px;
-  display:flex;gap:6px;
-}
-.hero-dot{
-  width:6px;height:6px;border-radius:3px;
-  background:rgba(255,255,255,0.3);cursor:pointer;
-  transition:all 0.3s;
-}
-.hero-dot.active{width:20px;background:var(--accent);}
-
-/* HORIZONTAL SCROLL */
-.h-scroll{
-  display:flex;gap:12px;
-  overflow-x:auto;padding-bottom:8px;
-  scrollbar-width:none;
-}
-.h-scroll::-webkit-scrollbar{display:none;}
-
-/* ANIME CARD */
-.anime-card{
-  flex-shrink:0;width:120px;cursor:pointer;
-  transition:transform 0.2s;
-}
-.anime-card:hover{transform:translateY(-4px);}
-.anime-card-poster{
-  position:relative;width:120px;height:170px;
-  border-radius:var(--radius-sm);overflow:hidden;
-  background:var(--bg3);margin-bottom:8px;
-}
-.anime-card-poster img{
-  width:100%;height:100%;object-fit:cover;
-  transition:transform 0.3s;
-}
-.anime-card:hover .anime-card-poster img{transform:scale(1.05);}
-.anime-card-score{
-  position:absolute;top:6px;left:6px;
-  background:rgba(0,0,0,0.75);
-  backdrop-filter:blur(4px);
-  padding:2px 6px;border-radius:4px;
-  font-size:11px;font-weight:700;color:var(--gold);
-  display:flex;align-items:center;gap:3px;
-}
-.anime-card-ep{
-  position:absolute;bottom:6px;right:6px;
-  background:rgba(230,57,70,0.85);
-  padding:2px 6px;border-radius:4px;
-  font-size:10px;font-weight:700;
-}
-.anime-card-new{
-  position:absolute;top:6px;right:6px;
-  background:var(--green);color:#000;
-  padding:2px 6px;border-radius:4px;
-  font-size:10px;font-weight:700;
-}
-.anime-card-title{
-  font-size:12px;font-weight:600;
-  line-height:1.3;
-  display:-webkit-box;-webkit-line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;
-}
-.anime-card-sub{font-size:11px;color:var(--text3);margin-top:2px;}
-
-/* ANIME CARD LARGE */
-.anime-card-lg{
-  flex-shrink:0;width:160px;cursor:pointer;
-  transition:transform 0.2s;
-}
-.anime-card-lg:hover{transform:translateY(-4px);}
-.anime-card-lg .anime-card-poster{width:160px;height:225px;}
-
-/* ONGOING CARD */
-.ongoing-card{
-  display:flex;gap:12px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--radius);padding:12px;cursor:pointer;
-  transition:all 0.2s;margin-bottom:10px;
-}
-.ongoing-card:hover{background:var(--card-hover);border-color:rgba(230,57,70,0.3);}
-.ongoing-thumb{
-  width:64px;height:90px;border-radius:var(--radius-sm);
-  object-fit:cover;flex-shrink:0;background:var(--bg3);
-}
-.ongoing-info{flex:1;min-width:0;}
-.ongoing-title{
-  font-size:14px;font-weight:700;
-  display:-webkit-box;-webkit-line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;
-  margin-bottom:4px;
-}
-.ongoing-meta{font-size:12px;color:var(--text2);margin-bottom:8px;}
-.ep-progress{
-  background:var(--bg);border-radius:3px;height:4px;overflow:hidden;
-}
-.ep-bar{height:100%;background:var(--accent);border-radius:3px;transition:width 0.5s;}
-.ep-info{
-  display:flex;justify-content:space-between;
-  font-size:11px;color:var(--text3);margin-top:4px;
-}
-
-/* SCHEDULE */
-.schedule-day{margin-bottom:20px;}
-.schedule-day-title{
-  font-family:'Exo 2',sans-serif;
-  font-size:14px;font-weight:700;
-  color:var(--accent);margin-bottom:10px;
-  padding-bottom:6px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:6px;
-}
-.schedule-today-badge{
-  background:var(--accent);color:#fff;
-  font-size:10px;padding:2px 6px;border-radius:3px;
-}
-.schedule-item{
-  display:flex;align-items:center;gap:10px;
-  padding:8px 0;border-bottom:1px solid var(--border);
-  cursor:pointer;transition:all 0.2s;
-}
-.schedule-item:hover{padding-left:6px;}
-.schedule-item:last-child{border-bottom:none;}
-.schedule-thumb{
-  width:42px;height:60px;border-radius:6px;
-  object-fit:cover;flex-shrink:0;background:var(--bg3);
-}
-.schedule-info{flex:1;min-width:0;}
-.schedule-title{
-  font-size:13px;font-weight:600;
-  display:-webkit-box;-webkit-line-clamp:1;
-  -webkit-box-orient:vertical;overflow:hidden;
-}
-.schedule-ep{font-size:11px;color:var(--text2);}
-.schedule-time{
-  font-size:11px;color:var(--accent);
-  font-weight:700;flex-shrink:0;
-}
-
-/* SEARCH */
-.search-filters{
-  display:flex;gap:8px;padding:16px 16px 8px;
-}
-.filter-btn{
-  flex:1;padding:8px;border-radius:8px;
-  border:1px solid var(--border);background:var(--bg2);
-  color:var(--text2);font-size:13px;font-weight:600;
-  cursor:pointer;font-family:'Nunito',sans-serif;
-  transition:all 0.2s;
-}
-.filter-btn.active{
-  background:var(--accent);border-color:var(--accent);color:#fff;
-}
-.search-results{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:12px;padding:8px 16px 24px;
-}
-.search-results.char-mode{grid-template-columns:repeat(2,1fr);}
-.char-card{
-  cursor:pointer;transition:transform 0.2s;
-  background:var(--card);border-radius:var(--radius-sm);overflow:hidden;
-}
-.char-card:hover{transform:translateY(-3px);}
-.char-card img{
-  width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;
-}
-.char-card-info{padding:8px;}
-.char-card-name{font-size:12px;font-weight:700;line-height:1.3;}
-.char-card-sub{font-size:10px;color:var(--text3);}
-.search-empty{
-  grid-column:1/-1;text-align:center;
-  padding:60px 20px;color:var(--text3);
-}
-.search-empty svg{margin-bottom:16px;opacity:0.3;}
-.search-empty p{font-size:14px;}
-
-/* ANIME DETAIL */
-#animePage{display:none;}
-#animePage.active{display:block;}
-.detail-hero{
-  position:relative;height:260px;overflow:hidden;
-}
-.detail-hero-blur{
-  position:absolute;inset:0;
-  background-size:cover;background-position:center;
-  filter:blur(20px);transform:scale(1.2);opacity:0.4;
-}
-.detail-hero-grad{
-  position:absolute;inset:0;
-  background:linear-gradient(to top, var(--bg) 0%, transparent 100%);
-}
-.detail-info{
-  position:relative;
-  display:flex;gap:14px;padding:0 16px;
-  margin-top:-100px;z-index:1;
-}
-.detail-poster{
-  width:110px;height:155px;border-radius:var(--radius-sm);
-  object-fit:cover;flex-shrink:0;
-  border:2px solid var(--border);
-  box-shadow:0 8px 32px rgba(0,0,0,0.5);
-  background:var(--bg3);
-}
-.detail-meta{flex:1;padding-top:70px;min-width:0;}
-.detail-title{
-  font-family:'Exo 2',sans-serif;
-  font-size:18px;font-weight:900;line-height:1.2;
-  margin-bottom:4px;
-}
-.detail-title-orig{font-size:12px;color:var(--text3);margin-bottom:10px;}
-.detail-score-row{
-  display:flex;align-items:center;gap:10px;margin-bottom:10px;
-}
-.detail-score{
-  font-family:'Exo 2',sans-serif;
-  font-size:28px;font-weight:900;color:var(--gold);
-  line-height:1;
-}
-.stars{display:flex;gap:2px;}
-.star{font-size:14px;}
-.detail-votes{font-size:11px;color:var(--text3);}
-.detail-tags{
-  display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;
-}
-.tag{
-  padding:4px 8px;border-radius:4px;font-size:11px;font-weight:600;
-  background:var(--bg3);color:var(--text2);border:1px solid var(--border);
-}
-.tag.accent{background:rgba(230,57,70,0.15);color:var(--accent);border-color:var(--accent);}
-.tag.blue{background:rgba(67,97,238,0.15);color:#7b9dff;border-color:rgba(67,97,238,0.3);}
-.tag.green{background:rgba(6,214,160,0.15);color:var(--green);border-color:rgba(6,214,160,0.3);}
-
-.detail-actions{
-  display:flex;gap:10px;padding:14px 16px;
-}
-.btn{
-  flex:1;padding:12px;border-radius:var(--radius-sm);
-  font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;
-  border:none;cursor:pointer;transition:all 0.2s;
-  display:flex;align-items:center;justify-content:center;gap:6px;
-}
-.btn-primary{background:var(--accent);color:#fff;}
-.btn-primary:hover{background:#c1121f;}
-.btn-secondary{
-  background:var(--bg3);color:var(--text);
-  border:1px solid var(--border);
-}
-.btn-secondary:hover{background:var(--card-hover);}
-
-.detail-section{padding:0 16px 20px;}
-.detail-section-title{
-  font-family:'Exo 2',sans-serif;
-  font-size:16px;font-weight:800;margin-bottom:12px;
-  display:flex;align-items:center;gap:8px;
-}
-.detail-section-title::before{
-  content:'';width:3px;height:18px;
-  background:var(--accent);border-radius:2px;display:block;
-}
-.detail-desc{
-  font-size:14px;line-height:1.7;color:var(--text2);
-}
-.detail-desc.collapsed{
-  display:-webkit-box;-webkit-line-clamp:4;
-  -webkit-box-orient:vertical;overflow:hidden;
-}
-.read-more{
-  color:var(--accent);font-size:13px;font-weight:600;
-  cursor:pointer;margin-top:8px;display:inline-block;
-}
-.info-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:8px;margin-bottom:16px;
-}
-.info-item{
-  background:var(--card);border-radius:var(--radius-sm);
-  padding:10px;border:1px solid var(--border);
-}
-.info-label{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;}
-.info-value{font-size:13px;font-weight:600;}
-.genres-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
-.genre-tag{
-  padding:5px 10px;border-radius:20px;
-  background:var(--bg3);font-size:12px;font-weight:600;
-  border:1px solid var(--border);cursor:pointer;
-  transition:all 0.2s;
-}
-.genre-tag:hover{background:var(--accent);border-color:var(--accent);}
-
-/* PLAYERS */
-.players-tabs{
-  display:flex;gap:8px;margin-bottom:12px;
-}
-.player-tab{
-  flex:1;padding:10px;border-radius:8px;
-  border:1px solid var(--border);background:var(--bg2);
-  color:var(--text2);font-size:13px;font-weight:700;
-  cursor:pointer;font-family:'Nunito',sans-serif;
-  transition:all 0.2s;
-}
-.player-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
-.player-frame{
-  width:100%;aspect-ratio:16/9;
-  border-radius:var(--radius-sm);overflow:hidden;
-  background:var(--bg2);border:1px solid var(--border);
-  position:relative;
-}
-.player-frame iframe{
-  width:100%;height:100%;border:none;
-}
-.player-placeholder{
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;height:100%;gap:12px;
-  padding:20px;text-align:center;
-}
-.player-placeholder svg{opacity:0.3;}
-.player-placeholder p{font-size:13px;color:var(--text3);}
-.player-input-group{
-  display:flex;gap:8px;margin-top:8px;
-  flex-direction:column;
-}
-.player-input{
-  background:var(--bg3);border:1px solid var(--border);
-  border-radius:8px;padding:10px 12px;
-  color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;
-  outline:none;width:100%;
-}
-.player-input:focus{border-color:var(--accent);}
-.kodik-results{
-  max-height:200px;overflow-y:auto;
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:8px;
-}
-.kodik-item{
-  padding:10px 12px;border-bottom:1px solid var(--border);
-  cursor:pointer;font-size:13px;transition:background 0.2s;
-}
-.kodik-item:hover{background:var(--card-hover);}
-.kodik-item:last-child{border-bottom:none;}
-
-/* CHARACTERS */
-.chars-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-.char-mini{
-  cursor:pointer;text-align:center;
-  transition:transform 0.2s;
-}
-.char-mini:hover{transform:translateY(-3px);}
-.char-mini img{
-  width:100%;aspect-ratio:1;border-radius:50%;
-  object-fit:cover;object-position:top;
-  background:var(--bg3);margin-bottom:4px;
-  border:2px solid var(--border);
-}
-.char-mini-name{font-size:11px;font-weight:600;line-height:1.3;}
-.char-mini-role{font-size:10px;color:var(--text3);}
-.show-all-chars{
-  grid-column:1/-1;
-  padding:10px;background:var(--bg3);
-  border:1px solid var(--border);border-radius:var(--radius-sm);
-  text-align:center;font-size:13px;font-weight:600;color:var(--accent);
-  cursor:pointer;transition:all 0.2s;
-}
-.show-all-chars:hover{background:rgba(230,57,70,0.1);}
-
-/* CHARACTER DETAIL */
-.char-detail-header{
-  background:linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
-  padding:80px 16px 24px;
-  border-bottom:1px solid var(--border);
-}
-.char-detail-inner{
-  display:flex;gap:14px;align-items:flex-end;
-}
-.char-detail-img{
-  width:100px;height:140px;border-radius:var(--radius-sm);
-  object-fit:cover;object-position:top;
-  border:2px solid var(--border);flex-shrink:0;
-  background:var(--bg3);
-}
-.char-detail-info{flex:1;}
-.char-detail-name{
-  font-family:'Exo 2',sans-serif;
-  font-size:22px;font-weight:900;line-height:1.2;margin-bottom:2px;
-}
-.char-detail-orig{font-size:12px;color:var(--text3);margin-bottom:8px;}
-.char-animes-mini{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
-.char-anime-chip{
-  padding:4px 8px;background:var(--bg);
-  border:1px solid var(--border);border-radius:4px;
-  font-size:11px;color:var(--text2);cursor:pointer;
-  transition:all 0.2s;
-}
-.char-anime-chip:hover{border-color:var(--accent);color:var(--accent);}
-
-.spoiler-block{
-  background:var(--card);border:1px solid rgba(230,57,70,0.3);
-  border-radius:var(--radius-sm);overflow:hidden;
-}
-.spoiler-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px;cursor:pointer;
-}
-.spoiler-title{
-  font-size:14px;font-weight:700;color:var(--accent);
-  display:flex;align-items:center;gap:6px;
-}
-.spoiler-arrow{font-size:12px;transition:transform 0.3s;}
-.spoiler-arrow.open{transform:rotate(180deg);}
-.spoiler-content{
-  padding:0 12px;max-height:0;overflow:hidden;
-  transition:max-height 0.4s ease,padding 0.3s;
-  font-size:13px;line-height:1.7;color:var(--text2);
-}
-.spoiler-content.open{
-  max-height:2000px;padding:0 12px 12px;
-}
-.spoiler-warn{
-  font-size:11px;color:var(--accent);
-  padding:6px 12px 12px;font-weight:600;
-}
-
-/* SETTINGS MODAL */
-.modal-overlay{
-  position:fixed;inset:0;z-index:2000;
-  background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);
-  display:none;align-items:flex-end;
-}
-.modal-overlay.open{display:flex;}
-.modal{
-  width:100%;background:var(--bg2);
-  border-radius:20px 20px 0 0;
-  padding:20px 16px 40px;
-  border-top:1px solid var(--border);
-  animation:slideUp 0.3s ease;
-}
-@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.modal-handle{
-  width:36px;height:4px;background:var(--text3);
-  border-radius:2px;margin:0 auto 20px;
-}
-.modal-title{
-  font-family:'Exo 2',sans-serif;
-  font-size:18px;font-weight:800;margin-bottom:20px;
-}
-.setting-group{margin-bottom:16px;}
-.setting-label{
-  font-size:12px;font-weight:700;color:var(--text3);
-  text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;
-}
-.setting-input{
-  width:100%;background:var(--bg3);border:1px solid var(--border);
-  border-radius:8px;padding:10px 12px;
-  color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;
-  outline:none;
-}
-.setting-input:focus{border-color:var(--accent);}
-.setting-note{font-size:11px;color:var(--text3);margin-top:4px;}
-.setting-note a{color:var(--accent);}
-.save-btn{
-  width:100%;padding:14px;border-radius:var(--radius-sm);
-  background:var(--accent);color:#fff;font-family:'Nunito',sans-serif;
-  font-size:14px;font-weight:700;border:none;cursor:pointer;
-  margin-top:8px;
-}
-.save-btn:hover{background:#c1121f;}
-
-/* TOAST */
-.toast{
-  position:fixed;bottom:20px;left:50%;
-  transform:translateX(-50%) translateY(100px);
-  background:var(--card);border:1px solid var(--border);
-  padding:12px 20px;border-radius:8px;
-  font-size:13px;font-weight:600;
-  z-index:3000;transition:transform 0.3s ease;
-  white-space:nowrap;
-}
-.toast.show{transform:translateX(-50%) translateY(0);}
-.toast.success{border-color:var(--green);color:var(--green);}
-.toast.error{border-color:var(--accent);color:var(--accent);}
-
-/* LOADING */
-.skeleton{
-  background:linear-gradient(90deg, var(--bg3) 25%, var(--card-hover) 50%, var(--bg3) 75%);
-  background-size:200% 100%;
-  animation:shimmer 1.5s infinite;
-  border-radius:var(--radius-sm);
-}
-@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-.skel-card{width:120px;height:170px;flex-shrink:0;}
-.skel-card-lg{width:160px;height:225px;flex-shrink:0;}
-.skel-text{height:14px;border-radius:3px;margin-bottom:6px;}
-.skel-text.sm{height:11px;}
-.loading-spinner{
-  display:flex;align-items:center;justify-content:center;
-  padding:60px;
-}
-.spinner{
-  width:36px;height:36px;border:3px solid var(--border);
-  border-top-color:var(--accent);border-radius:50%;
-  animation:spin 0.8s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg);}}
+nav{position:fixed;inset:0 0 auto 0;z-index:900;height:52px;background:rgba(10,11,16,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px;padding:0 12px;}
+.logo{font-family:'Exo 2',sans-serif;font-weight:900;font-size:19px;color:var(--acc);flex-shrink:0;cursor:pointer;}
+.logo span{color:var(--txt);}
+.nsw{flex:1;display:flex;align-items:center;background:var(--card2);border:1px solid var(--bdr2);border-radius:8px;padding:0 10px;gap:8px;transition:border-color .2s;}
+.nsw:focus-within{border-color:var(--acc);}
+.nsw svg{color:var(--txt3);flex-shrink:0;}
+.nsw input{flex:1;background:none;border:none;outline:none;color:var(--txt);font-size:13px;padding:8px 0;font-family:inherit;}
+.nsw input::placeholder{color:var(--txt3);}
+.ibtn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--card2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt2);flex-shrink:0;transition:all .2s;}
+.ibtn:hover{color:var(--acc);border-color:var(--acc);}
 
 /* BOTTOM NAV */
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:999;
-  background:rgba(11,12,18,0.95);backdrop-filter:blur(20px);
-  border-top:1px solid var(--border);
-  display:flex;height:56px;
-}
-.bottom-nav-btn{
-  flex:1;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:3px;cursor:pointer;border:none;background:none;
-  color:var(--text3);transition:color 0.2s;
-}
-.bottom-nav-btn.active{color:var(--accent);}
-.bottom-nav-btn svg{width:22px;height:22px;}
-.bottom-nav-btn span{font-size:10px;font-weight:600;}
-main{padding-bottom:56px;}
+.bnav{position:fixed;inset:auto 0 0 0;z-index:900;height:54px;background:rgba(10,11,16,.95);backdrop-filter:blur(24px);border-top:1px solid var(--bdr);display:flex;}
+.bb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--txt3);transition:color .2s;}
+.bb svg{width:20px;height:20px;}
+.bb span{font-size:10px;font-weight:700;}
+.bb.on{color:var(--acc);}
 
-/* PAGE TRANSITION */
-.page-fade{animation:fadeIn 0.3s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+/* LAYOUT */
+main{padding:52px 0 54px;}
+.pg{display:none;}
+.pg.on{display:block;animation:fu .3s ease both;}
+@keyframes fu{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
-/* RATINGS BAR */
-.rating-row{margin-bottom:6px;}
-.rating-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:3px;}
-.rating-bar{background:var(--bg3);height:6px;border-radius:3px;overflow:hidden;}
-.rating-fill{height:100%;border-radius:3px;background:linear-gradient(90deg, var(--accent), var(--gold));transition:width 0.8s ease;}
+.bk{position:fixed;top:58px;left:10px;z-index:800;width:34px;height:34px;border-radius:50%;background:rgba(10,11,16,.85);backdrop-filter:blur(8px);border:1px solid var(--bdr2);display:none;align-items:center;justify-content:center;color:var(--txt);transition:all .2s;}
+.bk.vis{display:flex;}
 
-/* BACK BTN */
-.back-btn{
-  position:fixed;top:62px;left:12px;z-index:100;
-  width:36px;height:36px;border-radius:50%;
-  background:rgba(11,12,18,0.8);backdrop-filter:blur(8px);
-  border:1px solid var(--border);
-  display:none;align-items:center;justify-content:center;
-  cursor:pointer;color:var(--text);
-}
-.back-btn.visible{display:flex;}
+/* SECTION */
+.sec{padding:18px 14px 4px;}
+.sechd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.secttl{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px;}
+.secttl::before{content:'';width:3px;height:18px;background:var(--acc);border-radius:2px;display:block;}
+.sa{font-size:12px;font-weight:700;color:var(--acc);opacity:.8;cursor:pointer;}
+.sa:hover{opacity:1;}
 
-/* GENRES PAGE */
-.genres-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);
-  gap:10px;padding:16px;
-}
-.genre-block{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--radius);padding:16px;
-  cursor:pointer;transition:all 0.2s;
-  display:flex;flex-direction:column;gap:4px;
-}
-.genre-block:hover{background:var(--card-hover);border-color:var(--accent);}
-.genre-block-name{font-size:14px;font-weight:700;}
-.genre-block-count{font-size:11px;color:var(--text3);}
+/* HSCROLL */
+.hs{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;}
+.hs::-webkit-scrollbar{display:none;}
+
+/* CARDS */
+.ac{flex-shrink:0;width:110px;cursor:pointer;transition:transform .2s;}
+.ac:hover{transform:translateY(-4px);}
+.acimg{position:relative;width:110px;height:157px;border-radius:var(--rs);overflow:hidden;background:var(--card2);margin-bottom:7px;}
+.acimg img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.ac:hover .acimg img{transform:scale(1.06);}
+.acov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 50%);}
+.bdg{position:absolute;padding:2px 5px;border-radius:3px;font-size:10px;font-weight:800;line-height:1.4;}
+.bsc{top:5px;left:5px;background:rgba(0,0,0,.75);color:var(--gold);}
+.bep{bottom:5px;right:5px;background:rgba(230,57,70,.85);color:#fff;}
+.acttl{font-size:12px;font-weight:700;line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.acsub{font-size:10px;color:var(--txt3);margin-top:2px;}
+.aclg{flex-shrink:0;width:145px;}.aclg .acimg{width:145px;height:205px;}
+
+/* ONGOING */
+.ogi{display:flex;gap:12px;background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:10px;margin-bottom:8px;cursor:pointer;transition:all .2s;}
+.ogi:hover{background:var(--ch);border-color:rgba(230,57,70,.25);}
+.ogth{width:58px;height:82px;border-radius:var(--rs);object-fit:cover;flex-shrink:0;background:var(--card2);}
+.ogi-info{flex:1;min-width:0;padding-top:2px;}
+.ogttl{font-size:13px;font-weight:700;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:4px;}
+.ogmeta{font-size:11px;color:var(--txt2);margin-bottom:8px;}
+.pb{height:4px;background:var(--bg2);border-radius:2px;overflow:hidden;}
+.pf{height:100%;background:linear-gradient(90deg,var(--acc),var(--gold));border-radius:2px;transition:width .6s;}
+.pt{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-top:3px;}
+
+/* HERO */
+.hero{position:relative;height:265px;overflow:hidden;}
+.hsl{position:absolute;inset:0;opacity:0;transition:opacity .7s;cursor:pointer;}
+.hsl.on{opacity:1;}
+.hsl img{width:100%;height:100%;object-fit:cover;object-position:center 20%;}
+.hg{position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,rgba(10,11,16,.4) 55%,transparent 100%);}
+.hc{position:absolute;bottom:0;left:0;right:0;padding:14px 14px 18px;}
+.hbdg{display:inline-flex;align-items:center;gap:4px;background:var(--acc);color:#fff;font-size:10px;font-weight:800;padding:3px 7px;border-radius:3px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.httl{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:900;line-height:1.2;margin-bottom:5px;text-shadow:0 2px 8px rgba(0,0,0,.9);}
+.hmeta{display:flex;align-items:center;gap:10px;font-size:11px;color:rgba(255,255,255,.7);}
+.hdots{position:absolute;bottom:14px;right:14px;display:flex;gap:5px;}
+.dot{width:5px;height:5px;border-radius:2.5px;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;}
+.dot.on{width:18px;background:var(--acc);}
+
+/* SCHEDULE */
+.sday{margin-bottom:18px;}
+.sdttl{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:800;color:var(--acc);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:6px;}
+.tbdg{background:var(--acc);color:#fff;font-size:10px;padding:1px 6px;border-radius:3px;}
+.si{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr);cursor:pointer;transition:padding-left .15s;}
+.si:hover{padding-left:5px;}.si:last-child{border:none;}
+.sith{width:40px;height:57px;border-radius:6px;object-fit:cover;flex-shrink:0;background:var(--card2);}
+.siinf{flex:1;min-width:0;}
+.sittl{font-size:12px;font-weight:700;overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;}
+.siep{font-size:11px;color:var(--txt2);margin-top:2px;}
+.sitm{font-size:11px;color:var(--acc);font-weight:800;flex-shrink:0;}
+
+/* SEARCH */
+.flts{display:flex;gap:8px;padding:14px 14px 6px;}
+.fb{flex:1;padding:9px;border-radius:8px;border:1px solid var(--bdr2);background:var(--card);color:var(--txt2);font-size:12px;font-weight:700;transition:all .2s;}
+.fb.on{background:var(--acc);border-color:var(--acc);color:#fff;}
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:6px 14px 20px;}
+.rg.chars{grid-template-columns:repeat(2,1fr);}
+.cc{cursor:pointer;background:var(--card);border-radius:var(--rs);overflow:hidden;transition:transform .2s;}
+.cc:hover{transform:translateY(-3px);}
+.ccimg{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;background:var(--card2);}
+.ccinfo{padding:7px 8px;}
+.ccname{font-size:12px;font-weight:700;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.ccsub{font-size:10px;color:var(--txt3);margin-top:1px;}
+.empty{grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--txt3);}
+.empty p{font-size:13px;margin-top:12px;}
+
+/* DETAIL */
+.dh{position:relative;height:230px;overflow:hidden;}
+.dhb{position:absolute;inset:-20px;background-size:cover;background-position:center;filter:blur(22px);opacity:.35;transform:scale(1.15);}
+.dhg{position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,rgba(10,11,16,.2) 100%);}
+.dinf{position:relative;z-index:1;display:flex;gap:12px;padding:0 14px;margin-top:-95px;}
+.dp{width:100px;height:143px;border-radius:var(--rs);object-fit:cover;flex-shrink:0;background:var(--card2);border:2px solid rgba(255,255,255,.08);box-shadow:0 8px 28px rgba(0,0,0,.6);}
+.dm{flex:1;padding-top:58px;min-width:0;}
+.dttl{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:900;line-height:1.2;margin-bottom:3px;}
+.dorig{font-size:11px;color:var(--txt3);margin-bottom:8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.dsr{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.dsc{font-family:'Exo 2',sans-serif;font-size:26px;font-weight:900;color:var(--gold);line-height:1;}
+.dscsub{font-size:10px;color:var(--txt3);}
+.dtags{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{padding:3px 8px;border-radius:3px;font-size:10px;font-weight:700;background:var(--card2);color:var(--txt2);border:1px solid var(--bdr);}
+.tag.red{background:var(--accdim);color:var(--acc);border-color:rgba(230,57,70,.3);}
+.tag.blue{background:rgba(76,201,240,.12);color:var(--blue);border-color:rgba(76,201,240,.25);}
+.tag.green{background:rgba(52,211,153,.12);color:var(--green);border-color:rgba(52,211,153,.25);}
+.tag.org{background:rgba(251,146,60,.12);color:var(--org);border-color:rgba(251,146,60,.25);}
+.dact{display:flex;gap:8px;padding:12px 14px;}
+.btn{flex:1;padding:12px;border-radius:var(--rs);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;}
+.btnr{background:var(--acc);color:#fff;}.btnr:hover{background:#c1121f;}
+.btng{background:var(--card2);color:var(--txt);border:1px solid var(--bdr2);}.btng:hover{background:var(--ch);}
+.ds{padding:0 14px 18px;}
+.dsttl{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.dsttl::before{content:'';width:3px;height:16px;background:var(--acc);border-radius:2px;display:block;}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px;}
+.ic{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rs);padding:9px 10px;}
+.ic.wide{grid-column:1/-1;}
+.ilbl{font-size:9px;font-weight:800;color:var(--txt3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px;}
+.ival{font-size:12px;font-weight:700;}
+.gnrs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.gnr{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:700;background:var(--card2);border:1px solid var(--bdr2);cursor:pointer;transition:all .2s;}
+.gnr:hover{background:var(--acc);border-color:var(--acc);color:#fff;}
+.dtxt{font-size:13px;line-height:1.75;color:var(--txt2);}
+.dtxt.cl{overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;}
+.rm{color:var(--acc);font-size:12px;font-weight:700;cursor:pointer;margin-top:6px;display:inline-block;}
+
+/* RATINGS */
+.rr{margin-bottom:8px;}
+.rl{display:flex;justify-content:space-between;font-size:11px;color:var(--txt2);margin-bottom:4px;}
+.rt{background:var(--card2);height:7px;border-radius:4px;overflow:hidden;}
+.rf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--acc),var(--gold));transition:width 1s ease;}
+
+/* PLAYERS */
+.ptabs{display:flex;gap:8px;margin-bottom:10px;}
+.ptab{flex:1;padding:9px;border-radius:8px;border:1px solid var(--bdr2);background:var(--card2);color:var(--txt2);font-size:12px;font-weight:800;transition:all .2s;}
+.ptab.on{background:var(--acc);border-color:var(--acc);color:#fff;}
+.pbox{width:100%;aspect-ratio:16/9;background:var(--card2);border:1px solid var(--bdr);border-radius:var(--rs);overflow:hidden;position:relative;}
+.pbox iframe{width:100%;height:100%;border:none;}
+.pph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;height:100%;padding:16px;text-align:center;}
+.pph svg{opacity:.25;}.pph p{font-size:12px;color:var(--txt3);}
+.pph a{color:var(--acc);font-size:12px;font-weight:700;}
+.plinp{width:100%;background:var(--card2);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;color:var(--txt);font-size:12px;outline:none;transition:border-color .2s;font-family:inherit;}
+.plinp:focus{border-color:var(--acc);}
+.kres{background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;max-height:180px;overflow-y:auto;margin-top:8px;display:none;}
+.ki{padding:9px 12px;border-bottom:1px solid var(--bdr);cursor:pointer;font-size:12px;transition:background .2s;}
+.ki:hover{background:var(--ch);}.ki:last-child{border:none;}
+.ki b{color:var(--txt);}.ki span{color:var(--txt3);}
+
+/* CHARS */
+.cgr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.chm{cursor:pointer;text-align:center;transition:transform .2s;}.chm:hover{transform:translateY(-3px);}
+.chmimg{width:100%;aspect-ratio:3/4;border-radius:var(--rs);object-fit:cover;object-position:top;background:var(--card2);margin-bottom:5px;border:1px solid var(--bdr);}
+.chmn{font-size:11px;font-weight:700;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.chmr{font-size:10px;color:var(--txt3);margin-top:1px;}
+.smb{grid-column:1/-1;padding:10px;border-radius:var(--rs);background:var(--card2);border:1px solid var(--bdr2);text-align:center;font-size:12px;font-weight:700;color:var(--acc);cursor:pointer;transition:all .2s;}
+.smb:hover{background:var(--accdim);}
+
+/* CHARACTER PAGE */
+.chhd{background:linear-gradient(160deg,var(--bg2) 0%,var(--card) 100%);padding:70px 14px 20px;border-bottom:1px solid var(--bdr);}
+.chhi{display:flex;gap:14px;align-items:flex-end;}
+.chimg{width:90px;height:127px;border-radius:var(--rs);object-fit:cover;object-position:top;border:2px solid var(--bdr2);flex-shrink:0;background:var(--card2);}
+.chn{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:900;line-height:1.2;margin-bottom:2px;}
+.cho{font-size:11px;color:var(--txt3);margin-bottom:8px;}
+.chan{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.chac{padding:4px 8px;background:var(--bg);border:1px solid var(--bdr);border-radius:4px;font-size:11px;color:var(--txt2);cursor:pointer;transition:all .2s;}
+.chac:hover{border-color:var(--acc);color:var(--acc);}
+.splblk{background:var(--card);border:1px solid rgba(230,57,70,.3);border-radius:var(--rs);overflow:hidden;}
+.splhd{display:flex;align-items:center;justify-content:space-between;padding:12px;cursor:pointer;}
+.splhdt{font-size:13px;font-weight:800;color:var(--acc);display:flex;align-items:center;gap:5px;}
+.splarr{font-size:11px;transition:transform .3s;}.splarr.open{transform:rotate(180deg);}
+.splw{font-size:11px;color:var(--acc);padding:0 12px 8px;font-weight:700;}
+.splb{padding:0 12px;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;font-size:13px;line-height:1.75;color:var(--txt2);}
+.splb.open{max-height:3000px;padding:0 12px 14px;}
+
+/* SETTINGS */
+.ov{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);display:none;align-items:flex-end;}
+.ov.open{display:flex;}
+.mdl{width:100%;background:var(--bg2);border-radius:18px 18px 0 0;padding:16px 16px 40px;border-top:1px solid var(--bdr2);animation:up .3s ease;}
+@keyframes up{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.mh{width:32px;height:4px;background:var(--txt3);border-radius:2px;margin:0 auto 18px;}
+.mttl{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;margin-bottom:18px;}
+.fld{margin-bottom:14px;}
+.flbl{font-size:10px;font-weight:800;color:var(--txt3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;}
+.finp{width:100%;background:var(--card2);border:1px solid var(--bdr2);border-radius:8px;padding:10px 12px;color:var(--txt);font-size:13px;outline:none;font-family:inherit;}
+.finp:focus{border-color:var(--acc);}
+.fnote{font-size:11px;color:var(--txt3);margin-top:4px;}
+.fnote a{color:var(--acc);}
+.savebtn{width:100%;padding:13px;border-radius:var(--rs);background:var(--acc);color:#fff;font-size:14px;font-weight:800;margin-top:6px;transition:background .2s;font-family:inherit;cursor:pointer;}
+.savebtn:hover{background:#c1121f;}
+
+/* TOAST */
+.toast{position:fixed;bottom:70px;left:50%;z-index:2000;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--card2);border:1px solid var(--bdr2);padding:10px 18px;border-radius:8px;font-size:12px;font-weight:700;transition:all .3s;pointer-events:none;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.ok{border-color:var(--green);color:var(--green);}
+.toast.err{border-color:var(--acc);color:var(--acc);}
+
+/* SKELETON / SPINNER */
+.sk{background:linear-gradient(90deg,var(--card) 25%,var(--ch) 50%,var(--card) 75%);background-size:200% 100%;animation:shim 1.5s infinite;border-radius:var(--rs);}
+@keyframes shim{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.spw{display:flex;align-items:center;justify-content:center;padding:48px;}
+.sp{width:32px;height:32px;border:3px solid var(--bdr);border-top-color:var(--acc);border-radius:50%;animation:rot .8s linear infinite;}
+@keyframes rot{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <a class="nav-logo" onclick="showPage('home')">Ani<span>Stream</span></a>
-  <div class="nav-search">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="navSearch" placeholder="Поиск аниме и персонажей..." autocomplete="off">
+  <div class="logo" onclick="go('home')">Ani<span>Stream</span></div>
+  <div class="nsw">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="navQ" placeholder="Поиск аниме и персонажей...">
   </div>
-  <button class="settings-btn" onclick="openSettings()">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.1 4.9C17.7 3.5 15.9 2.6 14 2.1L13 5c-.7-.2-1.3-.2-2 0L10 2.1c-1.9.5-3.7 1.4-5.1 2.8L6.7 7c-.5.5-.9 1.1-1.2 1.7L2.6 8.1C2.2 9.4 2 10.7 2 12s.2 2.6.6 3.9l2.9-.6c.3.6.7 1.2 1.2 1.7l-1.8 2.1c1.4 1.4 3.2 2.3 5.1 2.8L11 19c.7.2 1.3.2 2 0l1 2.9c1.9-.5 3.7-1.4 5.1-2.8l-1.8-2.1c.5-.5.9-1.1 1.2-1.7l2.9.6c.4-1.3.6-2.6.6-3.9s-.2-2.6-.6-3.9l-2.9.6c-.3-.6-.7-1.2-1.2-1.7l1.8-2.1z"/></svg>
+  <button class="ibtn" onclick="openCfg()">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.1 4.9C17.7 3.5 15.9 2.6 14 2.1L13 5c-.7-.2-1.3-.2-2 0L10 2.1C8.1 2.6 6.3 3.5 4.9 4.9L6.7 7c-.5.5-.9 1.1-1.2 1.7L2.6 8.1C2.2 9.4 2 10.7 2 12s.2 2.6.6 3.9l2.9-.6c.3.6.7 1.2 1.2 1.7l-1.8 2.1c1.4 1.4 3.2 2.3 5.1 2.8L11 19c.7.2 1.3.2 2 0l1 2.9c1.9-.5 3.7-1.4 5.1-2.8l-1.8-2.1c.5-.5.9-1.1 1.2-1.7l2.9.6c.4-1.3.6-2.6.6-3.9s-.2-2.6-.6-3.9l-2.9.6c-.3-.6-.7-1.2-1.2-1.7l1.8-2.1z"/></svg>
   </button>
 </nav>
 
-<!-- BACK BUTTON -->
-<button class="back-btn" id="backBtn" onclick="goBack()">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+<button class="bk" id="bkBtn" onclick="back()">
+  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
 </button>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <button class="bottom-nav-btn active" id="btn-home" onclick="showPage('home');setActive('home')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    <span>Главная</span>
-  </button>
-  <button class="bottom-nav-btn" id="btn-search" onclick="showPage('search');setActive('search')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <span>Поиск</span>
-  </button>
-  <button class="bottom-nav-btn" id="btn-schedule" onclick="showPage('schedule');setActive('schedule')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-    <span>Расписание</span>
-  </button>
-  <button class="bottom-nav-btn" id="btn-favorites" onclick="showPage('favorites');setActive('favorites')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-    <span>Избранное</span>
-  </button>
-</div>
-
 <main>
-<!-- HOME PAGE -->
-<div class="page active page-fade" id="homePage">
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-slides" id="heroSlides"></div>
-    <div class="hero-dots" id="heroDots"></div>
-  </div>
 
-  <!-- SEASON NEW -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">Новинки сезона</div>
-      <div class="see-all" onclick="loadSeeAll('season')">Все →</div>
-    </div>
-    <div class="h-scroll" id="seasonList">
-      ${makeSkeletons(8,'skel-card')}
+<!-- HOME -->
+<div class="pg on" id="pg-home">
+  <div class="hero" id="heroEl"></div>
+  <div class="sec">
+    <div class="sechd"><div class="secttl">🌸 Новинки сезона</div><div class="sa" onclick="seeAll('season')">Все →</div></div>
+    <div class="hs" id="lSeason">
+      <div class="sk" style="width:110px;height:157px;flex-shrink:0"></div>
+      <div class="sk" style="width:110px;height:157px;flex-shrink:0"></div>
+      <div class="sk" style="width:110px;height:157px;flex-shrink:0"></div>
+      <div class="sk" style="width:110px;height:157px;flex-shrink:0"></div>
     </div>
   </div>
-
-  <!-- RECOMMENDATIONS -->
-  <div class="section" style="padding-top:0">
-    <div class="section-header">
-      <div class="section-title">Топ-рейтинг</div>
-      <div class="see-all" onclick="loadSeeAll('top')">Все →</div>
-    </div>
-    <div class="h-scroll" id="topList">
-      ${makeSkeletons(8,'skel-card-lg anime-card-lg')}
+  <div class="sec">
+    <div class="sechd"><div class="secttl">🏆 Топ рейтинга</div><div class="sa" onclick="seeAll('top')">Все →</div></div>
+    <div class="hs" id="lTop">
+      <div class="sk" style="width:145px;height:205px;flex-shrink:0"></div>
+      <div class="sk" style="width:145px;height:205px;flex-shrink:0"></div>
+      <div class="sk" style="width:145px;height:205px;flex-shrink:0"></div>
     </div>
   </div>
-
-  <!-- ONGOING UPDATES -->
-  <div class="section" style="padding-top:0">
-    <div class="section-header">
-      <div class="section-title">Обновления</div>
-      <div class="see-all" onclick="loadSeeAll('ongoing')">Все →</div>
-    </div>
-    <div id="ongoingList"></div>
+  <div class="sec">
+    <div class="sechd"><div class="secttl">🔄 Обновления</div><div class="sa" onclick="seeAll('ongoing')">Все →</div></div>
+    <div id="lOng"><div class="spw"><div class="sp"></div></div></div>
   </div>
-
-  <!-- SCHEDULE PREVIEW -->
-  <div class="section" style="padding-top:0">
-    <div class="section-header">
-      <div class="section-title">Расписание</div>
-      <div class="see-all" onclick="showPage('schedule');setActive('schedule')">Все →</div>
-    </div>
-    <div id="scheduleMiniList"></div>
+  <div class="sec">
+    <div class="sechd"><div class="secttl">📅 Расписание</div><div class="sa" onclick="go('schedule')">Все →</div></div>
+    <div id="schedMini"></div>
   </div>
 </div>
 
-<!-- SEARCH PAGE -->
-<div class="page page-fade" id="searchPage">
-  <div class="search-filters">
-    <button class="filter-btn active" id="filterAnime" onclick="setSearchMode('anime')">🎬 Аниме</button>
-    <button class="filter-btn" id="filterChar" onclick="setSearchMode('characters')">👤 Персонажи</button>
+<!-- SEARCH -->
+<div class="pg" id="pg-search">
+  <div class="flts">
+    <button class="fb on" id="fbA" onclick="setMode('anime')">🎬 Аниме</button>
+    <button class="fb" id="fbC" onclick="setMode('char')">👤 Персонажи</button>
   </div>
-  <div class="search-results" id="searchResults">
-    <div class="search-empty">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+  <div class="rg" id="rg">
+    <div class="empty">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <p>Введите запрос для поиска</p>
     </div>
   </div>
 </div>
 
-<!-- SCHEDULE PAGE -->
-<div class="page page-fade" id="schedulePage">
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">Расписание на неделю</div>
-    </div>
-    <div id="scheduleList"><div class="loading-spinner"><div class="spinner"></div></div></div>
+<!-- SCHEDULE -->
+<div class="pg" id="pg-schedule">
+  <div class="sec">
+    <div class="sechd"><div class="secttl">📅 Расписание на неделю</div></div>
+    <div id="schedFull"><div class="spw"><div class="sp"></div></div></div>
   </div>
 </div>
 
-<!-- FAVORITES PAGE -->
-<div class="page page-fade" id="favoritesPage">
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">Избранное</div>
-    </div>
-    <div id="favoritesList"><div class="search-empty"><p style="color:var(--text3)">Нет избранного</p></div></div>
-  </div>
-</div>
-
-<!-- ANIME DETAIL PAGE -->
-<div class="page page-fade" id="animePage">
-  <div class="detail-hero">
-    <div class="detail-hero-blur" id="detailBg"></div>
-    <div class="detail-hero-grad"></div>
-  </div>
-  <div class="detail-info">
-    <img class="detail-poster" id="detailPoster" src="" alt="">
-    <div class="detail-meta">
-      <div class="detail-title" id="detailTitle">—</div>
-      <div class="detail-title-orig" id="detailOrig">—</div>
-      <div class="detail-score-row">
-        <div class="detail-score" id="detailScore">—</div>
-        <div>
-          <div class="stars" id="detailStars"></div>
-          <div class="detail-votes" id="detailVotes"></div>
-        </div>
-        <button class="btn btn-secondary" style="flex:none;padding:6px 10px;font-size:12px" id="favBtn" onclick="toggleFavorite()">
-          ⭐ В избранное
-        </button>
+<!-- FAVORITES -->
+<div class="pg" id="pg-fav">
+  <div class="sec">
+    <div class="sechd"><div class="secttl">⭐ Избранное</div></div>
+    <div class="rg" id="favGr">
+      <div class="empty" style="grid-column:1/-1">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <p>Сохраняйте аниме здесь</p>
       </div>
-      <div class="detail-tags" id="detailTags"></div>
-    </div>
-  </div>
-
-  <div class="detail-actions">
-    <button class="btn btn-primary" onclick="scrollToPlayer()">▶ Смотреть</button>
-    <button class="btn btn-secondary" id="shareBtn" onclick="shareAnime()">↗ Поделиться</button>
-  </div>
-
-  <div class="detail-section">
-    <div class="info-grid" id="detailInfoGrid"></div>
-    <div class="genres-list" id="detailGenres"></div>
-  </div>
-
-  <div class="detail-section">
-    <div class="detail-section-title">Описание</div>
-    <div class="detail-desc collapsed" id="detailDesc">—</div>
-    <span class="read-more" id="readMoreBtn" onclick="toggleDesc()">Читать полностью ↓</span>
-  </div>
-
-  <!-- RATINGS -->
-  <div class="detail-section" id="ratingsSection">
-    <div class="detail-section-title">Рейтинги</div>
-    <div id="ratingsContent"></div>
-  </div>
-
-  <!-- PLAYERS -->
-  <div class="detail-section" id="playersSection">
-    <div class="detail-section-title">Плееры</div>
-    <div class="players-tabs">
-      <button class="player-tab active" onclick="setPlayer('kodik')">Kodik</button>
-      <button class="player-tab" onclick="setPlayer('cvh')">CVH</button>
-    </div>
-    <div class="player-frame" id="playerFrame">
-      <div class="player-placeholder">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        <p>Загрузка плеера...</p>
-      </div>
-    </div>
-    <div id="kodikSearchBlock" style="margin-top:10px;display:none;">
-      <div class="setting-label">Результаты поиска Kodik:</div>
-      <div class="kodik-results" id="kodikResults"></div>
-    </div>
-  </div>
-
-  <!-- CHARACTERS -->
-  <div class="detail-section">
-    <div class="detail-section-title">Персонажи</div>
-    <div class="chars-grid" id="charsGrid">
-      <div class="loading-spinner" style="grid-column:1/-1"><div class="spinner"></div></div>
-    </div>
-  </div>
-
-  <!-- RELATED -->
-  <div class="detail-section" id="relatedSection" style="display:none">
-    <div class="detail-section-title">Связанное</div>
-    <div class="h-scroll" id="relatedList"></div>
-  </div>
-</div>
-
-<!-- CHARACTER DETAIL PAGE -->
-<div class="page page-fade" id="charPage">
-  <div class="char-detail-header">
-    <div class="char-detail-inner">
-      <img class="char-detail-img" id="charDetailImg" src="" alt="">
-      <div class="char-detail-info">
-        <div class="char-detail-name" id="charDetailName">—</div>
-        <div class="char-detail-orig" id="charDetailOrig">—</div>
-        <div class="char-animes-mini" id="charDetailAnimes"></div>
-      </div>
-    </div>
-  </div>
-  <div class="detail-section" style="padding-top:16px">
-    <div class="detail-section-title">Описание</div>
-    <div class="detail-desc" id="charDesc">—</div>
-  </div>
-  <div class="detail-section" id="charSpoilerSection" style="display:none">
-    <div class="detail-section-title">Спойлеры</div>
-    <div class="spoiler-block">
-      <div class="spoiler-header" onclick="toggleSpoiler()">
-        <div class="spoiler-title">⚠️ Открыть спойлеры</div>
-        <div class="spoiler-arrow" id="spoilerArrow">▼</div>
-      </div>
-      <div class="spoiler-warn">Осторожно! Далее содержатся спойлеры.</div>
-      <div class="spoiler-content" id="spoilerContent"></div>
     </div>
   </div>
 </div>
 
-<!-- SEE ALL PAGE -->
-<div class="page page-fade" id="seeAllPage">
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title" id="seeAllTitle">Все аниме</div>
+<!-- ANIME DETAIL -->
+<div class="pg" id="pg-anime">
+  <div class="dh"><div class="dhb" id="dBg"></div><div class="dhg"></div></div>
+  <div class="dinf">
+    <img class="dp" id="dPstr" src="" alt="">
+    <div class="dm">
+      <div class="dttl" id="dTtl">—</div>
+      <div class="dorig" id="dOrig">—</div>
+      <div class="dsr">
+        <div><div class="dsc" id="dSc">—</div><div class="dscsub" id="dScSub">рейтинг</div></div>
+        <button class="btn btng" style="flex:none;padding:7px 12px;font-size:11px" id="favBtn" onclick="toggleFav()">⭐ В избранное</button>
+      </div>
+      <div class="dtags" id="dTags"></div>
     </div>
-    <div class="search-results" id="seeAllGrid"></div>
+  </div>
+  <div class="dact">
+    <button class="btn btnr" onclick="document.getElementById('playerSec').scrollIntoView({behavior:'smooth'})">▶ Смотреть</button>
+    <button class="btn btng" onclick="shareAnime()">↗ Поделиться</button>
+  </div>
+  <div class="ds"><div class="ig" id="dIG"></div><div class="gnrs" id="dGnr"></div></div>
+  <div class="ds">
+    <div class="dsttl">Описание</div>
+    <div class="dtxt cl" id="dDesc">—</div>
+    <span class="rm" id="rmBtn" onclick="toggleDesc()">Читать полностью ↓</span>
+  </div>
+  <div class="ds"><div class="dsttl">Рейтинги</div><div id="dRat"></div></div>
+  <div class="ds" id="playerSec">
+    <div class="dsttl">Плееры</div>
+    <div class="ptabs">
+      <button class="ptab on" onclick="setPlayer('kodik',this)">Kodik</button>
+      <button class="ptab" onclick="setPlayer('cvh',this)">CVH</button>
+    </div>
+    <div class="pbox" id="pBox"><div class="pph"><div class="sp"></div></div></div>
+    <div class="kres" id="kRes"></div>
+    <div style="margin-top:8px;display:none" id="manBlk">
+      <input class="plinp" id="manUrl" placeholder="Вставьте ссылку на плеер...">
+      <button class="btn btnr" style="margin-top:6px;padding:10px" onclick="loadFr(document.getElementById('manUrl').value)">Загрузить</button>
+    </div>
+  </div>
+  <div class="ds">
+    <div class="dsttl">Персонажи</div>
+    <div class="cgr" id="chGr"><div class="spw" style="grid-column:1/-1"><div class="sp"></div></div></div>
+  </div>
+  <div class="ds" id="relSec" style="display:none">
+    <div class="dsttl">Связанное</div>
+    <div class="hs" id="relList"></div>
+  </div>
+</div>
+
+<!-- CHARACTER -->
+<div class="pg" id="pg-char">
+  <div class="chhd">
+    <div class="chhi">
+      <img class="chimg" id="chImg" src="" alt="">
+      <div>
+        <div class="chn" id="chNm">—</div>
+        <div class="cho" id="chOr">—</div>
+        <div class="chan" id="chAn"></div>
+      </div>
+    </div>
+  </div>
+  <div class="ds" style="padding-top:16px">
+    <div class="dsttl">Описание</div>
+    <div class="dtxt" id="chDesc">—</div>
+  </div>
+  <div class="ds" id="chSplSec" style="display:none">
+    <div class="dsttl">Спойлеры</div>
+    <div class="splblk">
+      <div class="splhd" onclick="toggleSpl()">
+        <div class="splhdt">⚠️ Открыть спойлеры</div>
+        <div class="splarr" id="splArr">▼</div>
+      </div>
+      <div class="splw">Осторожно! Далее содержатся спойлеры.</div>
+      <div class="splb" id="splBody"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEE ALL -->
+<div class="pg" id="pg-seeall">
+  <div class="sec">
+    <div class="sechd"><div class="secttl" id="saTitle">Все аниме</div></div>
+    <div class="rg" id="saGr"></div>
   </div>
 </div>
 
 </main>
 
-<!-- SETTINGS MODAL -->
-<div class="modal-overlay" id="settingsModal" onclick="closeSettings(event)">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <div class="modal-title">⚙️ Настройки</div>
-    <div class="setting-group">
-      <div class="setting-label">Kodik API Token</div>
-      <input type="text" class="setting-input" id="kodikToken" placeholder="Введите токен Kodik...">
-      <div class="setting-note">Получить токен: <a href="https://kodik.info" target="_blank">kodik.info</a> (бесплатно для личного использования)</div>
+<div class="bnav">
+  <button class="bb on" id="bn-home" onclick="go('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Главная</span>
+  </button>
+  <button class="bb" id="bn-search" onclick="go('search')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Поиск</span>
+  </button>
+  <button class="bb" id="bn-schedule" onclick="go('schedule')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Расписание</span>
+  </button>
+  <button class="bb" id="bn-fav" onclick="go('fav')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Избранное</span>
+  </button>
+</div>
+
+<div class="ov" id="cfgOv" onclick="if(event.target===this)closeCfg()">
+  <div class="mdl">
+    <div class="mh"></div>
+    <div class="mttl">⚙️ Настройки</div>
+    <div class="fld">
+      <div class="flbl">Kodik API Токен</div>
+      <input class="finp" type="text" id="kTok" placeholder="Введите токен...">
+      <div class="fnote">Получить: <a href="https://kodik.info" target="_blank">kodik.info</a> (бесплатно)</div>
     </div>
-    <div class="setting-group">
-      <div class="setting-label">Качество по умолчанию</div>
-      <select class="setting-input" id="defaultQuality">
-        <option value="720">720p</option>
-        <option value="1080">1080p</option>
-        <option value="480">480p</option>
-      </select>
-    </div>
-    <button class="save-btn" onclick="saveSettings()">💾 Сохранить</button>
+    <button class="savebtn" onclick="saveCfg()">💾 Сохранить</button>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ============================================================
-// CONFIG & STATE
-// ============================================================
-const SHIKI_GQL = 'https://shikimori.one/api/graphql';
-const KODIK_API = 'https://kodikapi.com';
-const IMG_BASE = 'https://shikimori.one';
-let settings = JSON.parse(localStorage.getItem('anistream_settings')||'{}');
-let favorites = JSON.parse(localStorage.getItem('anistream_favs')||'[]');
-let history = ['home'];
-let currentAnime = null;
-let currentChar = null;
-let heroAnimes = [];
-let heroIdx = 0;
-let heroTimer;
-let searchMode = 'anime';
-let searchTimer;
-let activePlayer = 'kodik';
-let currentSeason = getCurrentSeason();
+const AL='https://graphql.anilist.co';
+const KDK='https://kodikapi.com';
+let cfg=JSON.parse(localStorage.getItem('as_c')||'{}');
+let favs=JSON.parse(localStorage.getItem('as_f')||'[]');
+let stk=['home'];
+let curA=null,curC=null,allCh=[];
+let hi=0,htick;
+let sMode='anime',sTimer;
+let schedDone=false;
 
-function getCurrentSeason(){
-  const d=new Date();
-  const y=d.getFullYear();
-  const m=d.getMonth();
-  const s=m<3?'winter':m<6?'spring':m<9?'summer':'fall';
-  return `${s}_${y}`;
-}
+const SM={0:'WINTER',1:'WINTER',2:'WINTER',3:'SPRING',4:'SPRING',5:'SPRING',6:'SUMMER',7:'SUMMER',8:'SUMMER',9:'FALL',10:'FALL',11:'FALL'};
+const now=new Date();
+const CSN=SM[now.getMonth()];
+const CYR=now.getFullYear();
 
-function makeSkeletons(n, cls){
-  return Array(n).fill(`<div class="skeleton ${cls}"></div>`).join('');
-}
-
-// ============================================================
-// API
-// ============================================================
-async function gql(query, vars={}){
+async function al(query,vars={}){
   try{
-    const r = await fetch(SHIKI_GQL,{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'User-Agent':'AniStream/1.0'
-      },
-      body:JSON.stringify({query, variables:vars})
-    });
-    const d = await r.json();
-    return d.data;
-  }catch(e){
-    console.error('GQL error',e);
-    return null;
-  }
+    const r=await fetch(AL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({query,variables:vars})});
+    if(!r.ok)throw r.status;
+    return (await r.json()).data;
+  }catch(e){console.warn('AL',e);return null;}
+}
+async function kdkSearch(t){
+  if(!cfg.kTok)return null;
+  try{const r=await fetch(`${KDK}/search?token=${cfg.kTok}&title=${encodeURIComponent(t)}&types=anime-serial,anime&with_material_data=true&limit=6`);return(await r.json()).results||[];}
+  catch{return null;}
 }
 
-async function searchKodik(title){
-  if(!settings.kodikToken) return null;
-  try{
-    const url=`${KODIK_API}/search?token=${settings.kodikToken}&title=${encodeURIComponent(title)}&types=anime-serial,anime&with_material_data=true&limit=5`;
-    const r=await fetch(url);
-    const d=await r.json();
-    return d.results||[];
-  }catch(e){return null;}
-}
-
-// ============================================================
-// PAGES
-// ============================================================
-function showPage(name, addHistory=true){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const page = document.getElementById(name+'Page');
-  if(page){
-    page.classList.add('active');
-    page.classList.remove('page-fade');
-    void page.offsetWidth;
-    page.classList.add('page-fade');
-  }
-  const backBtn = document.getElementById('backBtn');
-  if(name==='home'){
-    backBtn.classList.remove('visible');
-  } else {
-    backBtn.classList.add('visible');
-  }
-  if(addHistory) history.push(name);
+/* ── NAV ── */
+function go(name,push=true){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const p=document.getElementById('pg-'+name);
+  if(p){p.classList.add('on');p.style.animation='none';void p.offsetWidth;p.style.animation='';}
+  document.querySelectorAll('.bb').forEach(b=>b.classList.remove('on'));
+  const bn=document.getElementById('bn-'+name);
+  if(bn)bn.classList.add('on');
+  document.getElementById('bkBtn').classList.toggle('vis',!['home','search','schedule','fav'].includes(name));
+  if(push)stk.push(name);
   window.scrollTo(0,0);
+  if(name==='schedule'&&!schedDone){schedDone=true;loadSched();}
+  if(name==='fav')renderFavs();
 }
+function back(){if(stk.length>1){stk.pop();go(stk[stk.length-1],false);}}
 
-function setActive(page){
-  document.querySelectorAll('.bottom-nav-btn').forEach(b=>b.classList.remove('active'));
-  const btn=document.getElementById('btn-'+page);
-  if(btn)btn.classList.add('active');
-}
-
-function goBack(){
-  if(history.length>1){
-    history.pop();
-    const prev=history[history.length-1];
-    showPage(prev,false);
-    if(['home','search','schedule','favorites'].includes(prev)) setActive(prev);
-  }
-}
-
-// ============================================================
-// HOME PAGE
-// ============================================================
-async function loadHome(){
-  loadHero();
-  loadSeason();
-  loadTop();
-  loadOngoing();
-  loadScheduleMini();
-}
+/* ── HOME ── */
+async function loadHome(){loadHero();loadSeason();loadTop();loadOng();loadSchedMini();}
 
 async function loadHero(){
-  const data=await gql(`
-    query{animes(season:"${currentSeason}",limit:6,order:ranked,status:"ongoing"){
-      id name russian poster{mainUrl} score status episodes episodesAired kind
-    }}
-  `);
-  if(!data?.animes?.length) return;
-  heroAnimes=data.animes;
-  const slides=document.getElementById('heroSlides');
-  const dots=document.getElementById('heroDots');
-  slides.innerHTML=heroAnimes.map((a,i)=>`
-    <div class="hero-slide ${i===0?'active':''}" onclick="openAnime(${a.id})">
-      <img class="hero-img" src="${IMG_BASE}${a.poster?.mainUrl||''}" 
-           onerror="this.style.opacity=0" alt="${a.russian||a.name}">
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <div class="hero-badge">🔥 Топ сезона</div>
-        <div class="hero-title">${a.russian||a.name}</div>
-        <div class="hero-meta">
-          <span>⭐ ${a.score||'?'}</span>
-          <span>${a.episodesAired||0}/${a.episodes||'?'} эп.</span>
-          <span>${kindLabel(a.kind)}</span>
-        </div>
+  const d=await al(`query($s:MediaSeason,$y:Int){Page(page:1,perPage:6){media(season:$s,seasonYear:$y,type:ANIME,sort:POPULARITY_DESC,status:RELEASING){id title{userPreferred romaji}coverImage{extraLarge large}bannerImage averageScore episodes nextAiringEpisode{episode}format}}}`,{s:CSN,y:CYR});
+  const list=d?.Page?.media||[];
+  if(!list.length)return;
+  const hero=document.getElementById('heroEl');
+  hero.innerHTML=list.map((a,i)=>{
+    const img=a.bannerImage||a.coverImage?.extraLarge||a.coverImage?.large||'';
+    return`<div class="hsl ${i===0?'on':''}" onclick="openA(${a.id})">
+      <img src="${img}" alt="" onerror="this.style.opacity=0;this.parentElement.style.background='var(--card2)'">
+      <div class="hg"></div>
+      <div class="hc">
+        <div class="hbdg">🔥 Топ сезона</div>
+        <div class="httl">${a.title?.userPreferred||a.title?.romaji||'—'}</div>
+        <div class="hmeta"><span>⭐ ${a.averageScore?(a.averageScore/10).toFixed(1):'?'}</span><span>${fmtEp(a)}</span><span>${fmtFmt(a.format)}</span></div>
       </div>
-    </div>
-  `).join('');
-  dots.innerHTML=heroAnimes.map((_,i)=>`<div class="hero-dot ${i===0?'active':''}" onclick="goHero(${i})"></div>`).join('');
-  clearInterval(heroTimer);
-  heroTimer=setInterval(()=>goHero((heroIdx+1)%heroAnimes.length),4000);
+    </div>`;
+  }).join('')+`<div class="hdots">${list.map((_,i)=>`<div class="dot ${i===0?'on':''}" onclick="goH(${i})"></div>`).join('')}</div>`;
+  clearInterval(htick);
+  htick=setInterval(()=>goH((hi+1)%list.length),4500);
 }
-
-function goHero(idx){
-  heroIdx=idx;
-  document.querySelectorAll('.hero-slide').forEach((s,i)=>s.classList.toggle('active',i===idx));
-  document.querySelectorAll('.hero-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+function goH(i){
+  hi=i;
+  document.querySelectorAll('.hsl').forEach((s,j)=>s.classList.toggle('on',j===i));
+  document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('on',j===i));
 }
 
 async function loadSeason(){
-  const data=await gql(`
-    query{animes(season:"${currentSeason}",limit:20,order:ranked){
-      id name russian poster{mainUrl} score kind episodesAired episodes
-    }}
-  `);
-  const list=document.getElementById('seasonList');
-  if(!data?.animes){list.innerHTML='<p style="color:var(--text3);padding:20px">Ошибка загрузки</p>';return;}
-  list.innerHTML=data.animes.map(a=>animeCardHTML(a)).join('');
+  const d=await al(`query($s:MediaSeason,$y:Int){Page(page:1,perPage:24){media(season:$s,seasonYear:$y,type:ANIME,sort:POPULARITY_DESC){id title{userPreferred romaji}coverImage{large extraLarge}averageScore format status episodes nextAiringEpisode{episode}}}}`,{s:CSN,y:CYR});
+  const l=document.getElementById('lSeason');
+  l.innerHTML=(d?.Page?.media||[]).map(a=>cH(a)).join('')||'<p style="color:var(--txt3);font-size:13px">Нет данных</p>';
 }
-
 async function loadTop(){
-  const data=await gql(`
-    query{animes(limit:20,order:ranked,kind:"tv"){
-      id name russian poster{mainUrl} score kind episodes
-    }}
-  `);
-  const list=document.getElementById('topList');
-  if(!data?.animes){list.innerHTML='';return;}
-  list.innerHTML=data.animes.map(a=>animeCardLgHTML(a)).join('');
+  const d=await al(`query{Page(page:1,perPage:20){media(type:ANIME,sort:SCORE_DESC,format:TV){id title{userPreferred romaji}coverImage{large extraLarge}averageScore format episodes}}}`);
+  document.getElementById('lTop').innerHTML=(d?.Page?.media||[]).map(a=>cLgH(a)).join('');
 }
-
-async function loadOngoing(){
-  const data=await gql(`
-    query{animes(status:"ongoing",limit:8,order:popularity){
-      id name russian poster{mainUrl} score episodes episodesAired nextEpisodeAt
-    }}
-  `);
-  const list=document.getElementById('ongoingList');
-  if(!data?.animes){list.innerHTML='';return;}
-  list.innerHTML=data.animes.map(a=>{
-    const pct=a.episodes?Math.round((a.episodesAired||0)/a.episodes*100):0;
-    return `
-    <div class="ongoing-card" onclick="openAnime(${a.id})">
-      <img class="ongoing-thumb" src="${IMG_BASE}${a.poster?.mainUrl||''}" alt="" onerror="this.style.opacity=0">
-      <div class="ongoing-info">
-        <div class="ongoing-title">${a.russian||a.name}</div>
-        <div class="ongoing-meta">⭐ ${a.score||'?'} · Эпизод ${a.episodesAired||0}${a.episodes?'/'+a.episodes:''}</div>
-        ${a.episodes?`
-        <div class="ep-progress"><div class="ep-bar" style="width:${pct}%"></div></div>
-        <div class="ep-info"><span>${a.episodesAired||0} из ${a.episodes}</span><span>${pct}%</span></div>
-        `:''}
+async function loadOng(){
+  const d=await al(`query{Page(page:1,perPage:10){media(type:ANIME,status:RELEASING,sort:POPULARITY_DESC,format:TV){id title{userPreferred romaji}coverImage{large}averageScore episodes nextAiringEpisode{episode airingAt}}}}`);
+  const l=document.getElementById('lOng');
+  const items=d?.Page?.media||[];
+  if(!items.length){l.innerHTML='';return;}
+  l.innerHTML=items.map(a=>{
+    const ep=(a.nextAiringEpisode?.episode||1)-1;
+    const pct=a.episodes?Math.round(ep/a.episodes*100):0;
+    return`<div class="ogi" onclick="openA(${a.id})">
+      <img class="ogth" src="${a.coverImage?.large||''}" alt="" onerror="this.style.opacity=0">
+      <div class="ogi-info">
+        <div class="ogttl">${a.title?.userPreferred||a.title?.romaji}</div>
+        <div class="ogmeta">⭐ ${a.averageScore?(a.averageScore/10).toFixed(1):'?'} · Эп. ${ep}${a.episodes?'/'+a.episodes:''}</div>
+        ${a.episodes?`<div class="pb"><div class="pf" style="width:${pct}%"></div></div><div class="pt"><span>${ep} из ${a.episodes}</span><span>${pct}%</span></div>`:''}
       </div>
     </div>`;
   }).join('');
 }
-
-async function loadScheduleMini(){
-  const days=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-  const now=new Date();
-  const todayDow=now.getDay(); // 0=sun
-  const data=await gql(`
-    query{animes(status:"ongoing",limit:28,order:popularity){
-      id name russian poster{mainUrl} nextEpisodeAt episodesAired
-    }}
-  `);
-  if(!data?.animes) return;
+async function loadSchedMini(){
+  const ts=Math.floor(Date.now()/1000);
+  const d=await al(`query($f:Int,$t:Int){Page(page:1,perPage:50){airingSchedules(airingAt_greater:$f,airingAt_lesser:$t,sort:TIME){episode airingAt media{id title{userPreferred romaji}coverImage{medium}}}}}`,{f:ts-86400,t:ts+3*86400});
+  const sc=d?.Page?.airingSchedules||[];
+  const dow=now.getDay();
   const byDay={};
-  data.animes.forEach(a=>{
-    if(!a.nextEpisodeAt) return;
-    const d=new Date(a.nextEpisodeAt);
-    const dow=d.getDay();
-    if(!byDay[dow]) byDay[dow]=[];
-    byDay[dow].push({...a,nextTime:d});
-  });
-  const list=document.getElementById('scheduleMiniList');
-  // Show today + next 2 days
+  sc.forEach(s=>{const dt=new Date(s.airingAt*1000);const dw=dt.getDay();if(!byDay[dw])byDay[dw]=[];byDay[dw].push({...s,date:dt});});
+  const DN=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
   let html='';
-  for(let i=0;i<3;i++){
-    const dow=(todayDow+i)%7;
-    const items=byDay[dow]||[];
-    if(!items.length) continue;
-    const isToday=i===0;
-    const dayName=dow===0?'Воскресенье':dow===1?'Понедельник':dow===2?'Вторник':dow===3?'Среда':dow===4?'Четверг':dow===5?'Пятница':'Суббота';
-    html+=`<div class="schedule-day">
-      <div class="schedule-day-title">${dayName} ${isToday?'<span class="schedule-today-badge">Сегодня</span>':''}</div>
-      ${items.slice(0,4).map(a=>`
-        <div class="schedule-item" onclick="openAnime(${a.id})">
-          <img class="schedule-thumb" src="${IMG_BASE}${a.poster?.mainUrl||''}" alt="" onerror="this.style.opacity=0">
-          <div class="schedule-info">
-            <div class="schedule-title">${a.russian||a.name}</div>
-            <div class="schedule-ep">Эпизод ${(a.episodesAired||0)+1}</div>
-          </div>
-          <div class="schedule-time">${fmtTime(a.nextTime)}</div>
-        </div>
-      `).join('')}
-    </div>`;
+  for(let i=0;i<4;i++){
+    const dw=(dow+i)%7;
+    const items=byDay[dw];
+    if(!items?.length)continue;
+    html+=`<div class="sday"><div class="sdttl">${DN[dw]} ${i===0?'<span class="tbdg">Сегодня</span>':''}</div>${items.slice(0,5).map(s=>`<div class="si" onclick="openA(${s.media.id})"><img class="sith" src="${s.media.coverImage?.medium||''}" alt="" onerror="this.style.opacity=0"><div class="siinf"><div class="sittl">${s.media.title?.userPreferred||s.media.title?.romaji}</div><div class="siep">Эпизод ${s.episode}</div></div><div class="sitm">${fmtTm(s.date)}</div></div>`).join('')}</div>`;
   }
-  list.innerHTML=html||'<p style="color:var(--text3);font-size:13px">Расписание временно недоступно</p>';
+  document.getElementById('schedMini').innerHTML=html||'<p style="color:var(--txt3);font-size:13px;padding:8px 0">Нет данных</p>';
 }
 
-// ============================================================
-// SCHEDULE FULL
-// ============================================================
-async function loadSchedule(){
-  const data=await gql(`
-    query{animes(status:"ongoing",limit:50,order:popularity){
-      id name russian poster{mainUrl} nextEpisodeAt episodesAired episodes score
-    }}
-  `);
-  const list=document.getElementById('scheduleList');
-  if(!data?.animes){list.innerHTML='<p style="color:var(--text3);padding:20px">Ошибка</p>';return;}
-  const now=new Date();
-  const todayDow=now.getDay();
+/* ── SCHEDULE ── */
+async function loadSched(){
+  const ts=Math.floor(Date.now()/1000);
+  const d=await al(`query($f:Int,$t:Int){Page(page:1,perPage:150){airingSchedules(airingAt_greater:$f,airingAt_lesser:$t,sort:TIME){episode airingAt media{id title{userPreferred romaji}coverImage{medium}averageScore}}}}`,{f:ts,t:ts+7*86400});
+  const sc=d?.Page?.airingSchedules||[];
+  const dow=now.getDay();
   const byDay={};
-  data.animes.forEach(a=>{
-    if(!a.nextEpisodeAt) return;
-    const d=new Date(a.nextEpisodeAt);
-    const diffDays=Math.floor((d-now)/86400000);
-    if(diffDays<0||diffDays>7) return;
-    const dow=d.getDay();
-    if(!byDay[dow]) byDay[dow]=[];
-    byDay[dow].push({...a,nextTime:d,diffDays});
-  });
-  const dayNames=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+  sc.forEach(s=>{const dt=new Date(s.airingAt*1000);const dw=dt.getDay();if(!byDay[dw])byDay[dw]=[];byDay[dw].push({...s,date:dt});});
+  const DN=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
   let html='';
   for(let i=0;i<7;i++){
-    const dow=(todayDow+i)%7;
-    const items=byDay[dow];
-    if(!items) continue;
-    const isToday=i===0;
-    html+=`<div class="schedule-day">
-      <div class="schedule-day-title">${dayNames[dow]} ${isToday?'<span class="schedule-today-badge">Сегодня</span>':''}</div>
-      ${items.map(a=>`
-        <div class="schedule-item" onclick="openAnime(${a.id})">
-          <img class="schedule-thumb" src="${IMG_BASE}${a.poster?.mainUrl||''}" alt="" onerror="this.style.opacity=0">
-          <div class="schedule-info">
-            <div class="schedule-title">${a.russian||a.name}</div>
-            <div class="schedule-ep">Эп. ${(a.episodesAired||0)+1} · ⭐ ${a.score||'?'}</div>
-          </div>
-          <div class="schedule-time">${fmtTime(a.nextTime)}</div>
-        </div>
-      `).join('')}
-    </div>`;
+    const dw=(dow+i)%7;
+    const items=byDay[dw];
+    if(!items?.length)continue;
+    html+=`<div class="sday"><div class="sdttl">${DN[dw]} ${i===0?'<span class="tbdg">Сегодня</span>':''}</div>${items.map(s=>`<div class="si" onclick="openA(${s.media.id})"><img class="sith" src="${s.media.coverImage?.medium||''}" alt="" onerror="this.style.opacity=0"><div class="siinf"><div class="sittl">${s.media.title?.userPreferred||s.media.title?.romaji}</div><div class="siep">Эп. ${s.episode} · ⭐ ${s.media.averageScore?(s.media.averageScore/10).toFixed(1):'?'}</div></div><div class="sitm">${fmtTm(s.date)}</div></div>`).join('')}</div>`;
   }
-  list.innerHTML=html||'<p style="color:var(--text3);padding:20px">Расписание пусто</p>';
+  document.getElementById('schedFull').innerHTML=html||'<p style="color:var(--txt3);padding:20px">Нет данных</p>';
 }
 
-// ============================================================
-// SEARCH
-// ============================================================
-function setSearchMode(mode){
-  searchMode=mode;
-  document.getElementById('filterAnime').classList.toggle('active',mode==='anime');
-  document.getElementById('filterChar').classList.toggle('active',mode==='characters');
-  const res=document.getElementById('searchResults');
-  res.classList.toggle('char-mode',mode==='characters');
-  const q=document.getElementById('navSearch').value.trim();
-  if(q) doSearch(q);
+/* ── SEARCH ── */
+function setMode(m){
+  sMode=m;
+  document.getElementById('fbA').classList.toggle('on',m==='anime');
+  document.getElementById('fbC').classList.toggle('on',m==='char');
+  document.getElementById('rg').classList.toggle('chars',m==='char');
+  const q=document.getElementById('navQ').value.trim();
+  if(q.length>1)doSearch(q);
 }
-
 async function doSearch(q){
-  const res=document.getElementById('searchResults');
-  res.innerHTML=`<div class="loading-spinner" style="grid-column:1/-1"><div class="spinner"></div></div>`;
-  if(searchMode==='anime'){
-    const data=await gql(`
-      query{animes(search:${JSON.stringify(q)},limit:30){
-        id name russian poster{mainUrl} score kind status episodesAired episodes
-      }}
-    `);
-    if(!data?.animes?.length){
-      res.innerHTML=`<div class="search-empty"><p>Ничего не найдено</p></div>`;return;
-    }
-    res.innerHTML=data.animes.map(a=>animeCardHTML(a)).join('');
-  } else {
-    const data=await gql(`
-      query{characters(search:${JSON.stringify(q)},limit:30){
-        id name russian poster{mainUrl}
-      }}
-    `);
-    if(!data?.characters?.length){
-      res.innerHTML=`<div class="search-empty"><p>Персонажи не найдены</p></div>`;return;
-    }
-    res.innerHTML=data.characters.map(c=>`
-      <div class="char-card" onclick="openChar(${c.id})">
-        <img src="${IMG_BASE}${c.poster?.mainUrl||''}" alt="${c.russian||c.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 130%22><rect fill=%22%23222%22 width=%22100%22 height=%22130%22/><text x=%2250%22 y=%2275%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2240%22>?</text></svg>'">
-        <div class="char-card-info">
-          <div class="char-card-name">${c.russian||c.name}</div>
-          <div class="char-card-sub">${c.name}</div>
-        </div>
-      </div>
-    `).join('');
+  const g=document.getElementById('rg');
+  g.innerHTML=`<div class="spw" style="grid-column:1/-1"><div class="sp"></div></div>`;
+  if(sMode==='anime'){
+    const d=await al(`query($s:String){Page(page:1,perPage:30){media(search:$s,type:ANIME,sort:SEARCH_MATCH){id title{userPreferred romaji}coverImage{large extraLarge}averageScore format status episodes nextAiringEpisode{episode}}}}`,{s:q});
+    const items=d?.Page?.media||[];
+    g.innerHTML=items.length?items.map(a=>cH(a)).join(''):`<div class="empty"><p>Аниме не найдено</p></div>`;
+  }else{
+    const d=await al(`query($s:String){Page(page:1,perPage:30){characters(search:$s,sort:SEARCH_MATCH){id name{full native}image{large medium}media(perPage:2){nodes{title{userPreferred}}}}}}`,{s:q});
+    const items=d?.Page?.characters||[];
+    g.innerHTML=items.length?items.map(c=>`<div class="cc" onclick="openC(${c.id})"><img class="ccimg" src="${c.image?.large||c.image?.medium||''}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 133%22><rect fill=%22%23222%22 width=%22100%22 height=%22133%22/><circle cx=%2250%22 cy=%2245%22 r=%2228%22 fill=%22%23444%22/><ellipse cx=%2250%22 cy=%22133%22 rx=%2244%22 ry=%2230%22 fill=%22%23444%22/></svg>'"><div class="ccinfo"><div class="ccname">${c.name?.full||'—'}</div><div class="ccsub">${c.name?.native||''}</div></div></div>`).join(''):`<div class="empty"><p>Персонажи не найдены</p></div>`;
   }
 }
 
-// ============================================================
-// ANIME DETAIL
-// ============================================================
-async function openAnime(id){
-  showPage('anime');
-  currentAnime=null;
-  // Reset
-  document.getElementById('detailPoster').src='';
-  document.getElementById('detailBg').style.backgroundImage='';
-  document.getElementById('detailTitle').textContent='Загрузка...';
-  document.getElementById('detailOrig').textContent='';
-  document.getElementById('detailScore').textContent='—';
-  document.getElementById('detailStars').innerHTML='';
-  document.getElementById('detailTags').innerHTML='';
-  document.getElementById('detailInfoGrid').innerHTML='';
-  document.getElementById('detailGenres').innerHTML='';
-  document.getElementById('detailDesc').textContent='';
-  document.getElementById('charsGrid').innerHTML='<div class="loading-spinner" style="grid-column:1/-1"><div class="spinner"></div></div>';
-  document.getElementById('playerFrame').innerHTML=`<div class="player-placeholder"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><p>Загрузка...</p></div>`;
-  document.getElementById('kodikSearchBlock').style.display='none';
-
-  const data=await gql(`
-    query($id:String!){
-      animes(ids:$id,limit:1){
-        id malId name russian english japanese kind rating score status
-        episodes episodesAired duration airedOn{year} releasedOn{year}
-        nextEpisodeAt description poster{mainUrl} season
-        genres{name russian}
-        studios{name}
-        characterRoles{
-          rolesRu
-          character{id name russian poster{mainUrl}}
-        }
-        related{
-          anime{id name russian poster{mainUrl} kind score}
-          relationRu
-        }
-        externalLinks{url kind}
-      }
-    }
-  `,{id:String(id)});
-
-  const a=data?.animes?.[0];
-  if(!a) return;
-  currentAnime=a;
-
-  const img=IMG_BASE+(a.poster?.mainUrl||'');
-  document.getElementById('detailPoster').src=img;
-  document.getElementById('detailBg').style.backgroundImage=`url(${img})`;
-  document.getElementById('detailTitle').textContent=a.russian||a.name;
-  document.getElementById('detailOrig').textContent=a.name+(a.japanese?` · ${a.japanese}`:'');
-
-  const score=parseFloat(a.score)||0;
-  document.getElementById('detailScore').textContent=score.toFixed(2);
-  document.getElementById('detailStars').innerHTML=renderStars(score);
-  document.getElementById('detailVotes').textContent='Shikimori рейтинг';
-
+/* ── ANIME DETAIL ── */
+async function openA(id){
+  go('anime');
+  resetD();
+  const d=await al(`query($id:Int){Media(id:$id,type:ANIME){id idMal title{romaji native userPreferred english}coverImage{extraLarge large}bannerImage averageScore meanScore popularity favourites status format episodes duration startDate{year month day}endDate{year}nextAiringEpisode{episode airingAt}season seasonYear source studios{nodes{name isMain}}genres description(asHtml:false)characters(sort:ROLE,perPage:25){edges{role node{id name{full native}image{large medium}}}}relations{edges{relationType(version:2)node{id title{userPreferred}coverImage{large}format averageScore type}}}}}`,{id});
+  const a=d?.Media;
+  if(!a){toast('Ошибка загрузки','err');return;}
+  curA=a;
+  const img=a.coverImage?.extraLarge||a.coverImage?.large||'';
+  document.getElementById('dPstr').src=img;
+  document.getElementById('dBg').style.backgroundImage=`url(${a.bannerImage||img})`;
+  document.getElementById('dTtl').textContent=a.title?.userPreferred||a.title?.romaji||'—';
+  document.getElementById('dOrig').textContent=[a.title?.romaji,a.title?.native].filter(Boolean).join(' · ');
+  const sc=a.averageScore?(a.averageScore/10).toFixed(1):'—';
+  document.getElementById('dSc').textContent=sc;
+  document.getElementById('dScSub').textContent=a.popularity?a.popularity.toLocaleString()+' пользователей':'рейтинг';
   const tags=[];
-  if(a.kind) tags.push({label:kindLabel(a.kind),cls:'blue'});
-  if(a.status) tags.push({label:statusLabel(a.status),cls:a.status==='ongoing'?'green':''});
-  if(a.rating) tags.push({label:a.rating.toUpperCase(),cls:''});
-  document.getElementById('detailTags').innerHTML=tags.map(t=>`<span class="tag ${t.cls}">${t.label}</span>`).join('');
-
-  document.getElementById('detailInfoGrid').innerHTML=`
-    <div class="info-item"><div class="info-label">Эпизоды</div><div class="info-value">${a.episodesAired||0}${a.episodes?'/'+a.episodes:''}</div></div>
-    <div class="info-item"><div class="info-label">Длительность</div><div class="info-value">${a.duration?a.duration+'мин.':'—'}</div></div>
-    <div class="info-item"><div class="info-label">Год</div><div class="info-value">${a.airedOn?.year||'—'}</div></div>
-    <div class="info-item"><div class="info-label">Студия</div><div class="info-value">${a.studios?.[0]?.name||'—'}</div></div>
-    ${a.nextEpisodeAt?`<div class="info-item" style="grid-column:1/-1"><div class="info-label">Следующий эпизод</div><div class="info-value">${fmtDate(new Date(a.nextEpisodeAt))}</div></div>`:''}
+  if(a.format)tags.push({l:fmtFmt(a.format),c:'blue'});
+  if(a.status)tags.push({l:fmtSt(a.status),c:a.status==='RELEASING'?'green':''});
+  if(a.season)tags.push({l:fmtSsn(a.season)+' '+(a.seasonYear||''),c:'org'});
+  document.getElementById('dTags').innerHTML=tags.map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
+  const studio=a.studios?.nodes?.find(s=>s.isMain)?.name||a.studios?.nodes?.[0]?.name||'—';
+  const nep=a.nextAiringEpisode;
+  document.getElementById('dIG').innerHTML=`
+    <div class="ic"><div class="ilbl">Формат</div><div class="ival">${fmtFmt(a.format)}</div></div>
+    <div class="ic"><div class="ilbl">Эпизоды</div><div class="ival">${a.episodes||'?'}</div></div>
+    <div class="ic"><div class="ilbl">Длительность</div><div class="ival">${a.duration?a.duration+'мин':'—'}</div></div>
+    <div class="ic"><div class="ilbl">Год</div><div class="ival">${a.startDate?.year||'—'}</div></div>
+    <div class="ic"><div class="ilbl">Студия</div><div class="ival">${studio}</div></div>
+    <div class="ic"><div class="ilbl">Источник</div><div class="ival">${fmtSrc(a.source)}</div></div>
+    ${nep?`<div class="ic wide"><div class="ilbl">Следующий эпизод</div><div class="ival">Эп. ${nep.episode} · ${fmtDt(new Date(nep.airingAt*1000))}</div></div>`:''}
   `;
-
-  if(a.genres?.length){
-    document.getElementById('detailGenres').innerHTML=a.genres.map(g=>`<span class="genre-tag" onclick="loadSeeAll('genre',${JSON.stringify(g.name)})">${g.russian||g.name}</span>`).join('');
-  }
-
-  const desc=a.description||'Описание отсутствует.';
-  const descEl=document.getElementById('detailDesc');
-  descEl.textContent=desc;
-  descEl.classList.add('collapsed');
-  document.getElementById('readMoreBtn').style.display=desc.length>200?'inline-block':'none';
-
-  // Ratings visual
-  document.getElementById('ratingsContent').innerHTML=`
-    <div class="rating-row"><div class="rating-label"><span>Shikimori</span><span>${score.toFixed(2)}/10</span></div><div class="rating-bar"><div class="rating-fill" style="width:${score*10}%"></div></div></div>
-    ${a.malId?`<div class="rating-row"><div class="rating-label"><span>MyAnimeList</span><span>ID: ${a.malId}</span></div></div>`:''}
+  document.getElementById('dGnr').innerHTML=(a.genres||[]).map(g=>`<span class="gnr" onclick="seeAllGenre('${g}')">${g}</span>`).join('');
+  const desc=(a.description||'Описание отсутствует.').replace(/<[^>]+>/g,'');
+  const de=document.getElementById('dDesc');de.textContent=desc;de.classList.add('cl');
+  document.getElementById('rmBtn').style.display=desc.length>250?'':'none';
+  document.getElementById('dRat').innerHTML=`
+    <div class="rr"><div class="rl"><span>AniList Score</span><span>${a.averageScore?a.averageScore+'/100':'—'}</span></div><div class="rt"><div class="rf" style="width:${a.averageScore||0}%"></div></div></div>
+    <div class="rr"><div class="rl"><span>Средняя оценка</span><span>${a.meanScore?a.meanScore+'/100':'—'}</span></div><div class="rt"><div class="rf" style="width:${a.meanScore||0}%"></div></div></div>
+    <div class="rr"><div class="rl"><span>Популярность</span><span>${a.popularity?.toLocaleString()||'—'}</span></div><div class="rt"><div class="rf" style="width:${Math.min(100,(a.popularity||0)/10000*100)}%;background:linear-gradient(90deg,var(--blue),#9b5de5)"></div></div></div>
   `;
-
-  // Characters
-  if(a.characterRoles?.length){
-    const mains=a.characterRoles.filter(r=>r.rolesRu?.includes('Главный'));
-    const others=a.characterRoles.filter(r=>!r.rolesRu?.includes('Главный'));
-    const all=[...mains,...others];
-    const shown=all.slice(0,9);
-    document.getElementById('charsGrid').innerHTML=shown.map(r=>`
-      <div class="char-mini" onclick="openChar(${r.character?.id})">
-        <img src="${IMG_BASE}${r.character?.poster?.mainUrl||''}" alt="${r.character?.russian||r.character?.name||'?'}"
-          onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23222%22 width=%22100%22 height=%22100%22/><circle cx=%2250%22 cy=%2240%22 r=%2225%22 fill=%22%23444%22/><ellipse cx=%2250%22 cy=%22120%22 rx=%2240%22 ry=%2235%22 fill=%22%23444%22/></svg>'">
-        <div class="char-mini-name">${r.character?.russian||r.character?.name||'?'}</div>
-        <div class="char-mini-role">${r.rolesRu?.[0]||''}</div>
-      </div>
-    `).join('')+
-    (all.length>9?`<div class="show-all-chars" onclick="showAllChars()">Показать все (${all.length})</div>`:'');
-  } else {
-    document.getElementById('charsGrid').innerHTML='<p style="color:var(--text3);grid-column:1/-1;font-size:13px">Нет данных о персонажах</p>';
-  }
-
-  // Related
-  const related=a.related?.filter(r=>r.anime)?.slice(0,10)||[];
-  if(related.length){
-    document.getElementById('relatedSection').style.display='';
-    document.getElementById('relatedList').innerHTML=related.map(r=>`
-      <div class="anime-card" onclick="openAnime(${r.anime.id})">
-        <div class="anime-card-poster">
-          <img src="${IMG_BASE}${r.anime.poster?.mainUrl||''}" alt="" onerror="this.style.opacity=0">
-          <div class="anime-card-score">⭐ ${r.anime.score||'?'}</div>
-        </div>
-        <div class="anime-card-title">${r.anime.russian||r.anime.name}</div>
-        <div class="anime-card-sub">${r.relationRu||kindLabel(r.anime.kind)}</div>
-      </div>
-    `).join('');
-  } else {
-    document.getElementById('relatedSection').style.display='none';
-  }
-
-  // Fav button
-  updateFavBtn();
-
-  // Load player
+  allCh=a.characters?.edges||[];
+  renderCh(allCh.slice(0,9),allCh.length>9);
+  const rels=(a.relations?.edges||[]).filter(e=>e.node?.type==='ANIME').slice(0,10);
+  if(rels.length){
+    document.getElementById('relSec').style.display='';
+    document.getElementById('relList').innerHTML=rels.map(e=>{const m=e.node;return`<div class="ac" onclick="openA(${m.id})"><div class="acimg"><img src="${m.coverImage?.large||''}" alt="" loading="lazy" onerror="this.style.opacity=0"><div class="acov"></div></div><div class="acttl">${m.title?.userPreferred||'—'}</div><div class="acsub">${e.relationType?.replace(/_/g,' ')||fmtFmt(m.format)}</div></div>`;}).join('');
+  }else{document.getElementById('relSec').style.display='none';}
+  updFavBtn();
   initPlayer(a);
 }
+function renderCh(edges,more){
+  document.getElementById('chGr').innerHTML=edges.map(e=>{
+    const c=e.node;const rr=e.role==='MAIN'?'Главный':e.role==='SUPPORTING'?'Второстепенный':'Фоновый';
+    return`<div class="chm" onclick="openC(${c.id})"><img class="chmimg" src="${c.image?.large||c.image?.medium||''}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 133%22><rect fill=%22%23222%22 width=%22100%22 height=%22133%22/><circle cx=%2250%22 cy=%2245%22 r=%2228%22 fill=%22%23444%22/><ellipse cx=%2250%22 cy=%22133%22 rx=%2244%22 ry=%2230%22 fill=%22%23444%22/></svg>'"><div class="chmn">${c.name?.full||'?'}</div><div class="chmr">${rr}</div></div>`;
+  }).join('')+(more?`<div class="smb" onclick="renderCh(allCh,false)">Показать все (${allCh.length})</div>`:'');
+}
+function resetD(){
+  ['dPstr'].forEach(id=>document.getElementById(id).src='');
+  document.getElementById('dBg').style.backgroundImage='';
+  document.getElementById('dTtl').textContent='Загрузка...';
+  document.getElementById('dOrig').textContent='';
+  document.getElementById('dSc').textContent='—';
+  ['dTags','dIG','dGnr','dRat'].forEach(id=>document.getElementById(id).innerHTML='');
+  document.getElementById('dDesc').textContent='';
+  document.getElementById('chGr').innerHTML='<div class="spw" style="grid-column:1/-1"><div class="sp"></div></div>';
+  document.getElementById('pBox').innerHTML='<div class="pph"><div class="sp"></div></div>';
+  document.getElementById('kRes').style.display='none';
+  document.getElementById('manBlk').style.display='none';
+}
 
+/* ── PLAYERS ── */
 async function initPlayer(a){
-  if(settings.kodikToken){
-    const results=await searchKodik(a.russian||a.name);
-    if(results?.length){
-      document.getElementById('kodikSearchBlock').style.display='block';
-      document.getElementById('kodikResults').innerHTML=results.map((r,i)=>`
-        <div class="kodik-item" onclick="loadKodikPlayer('${r.link}')">
-          📺 ${r.title||a.russian||a.name} ${r.episodes_count?`(${r.episodes_count} эп.)`:''}
-          <span style="color:var(--text3);font-size:11px"> · ${r.translation?.title||'Оригинал'}</span>
-        </div>
-      `).join('');
-      // Auto-load first
-      loadKodikPlayer(results[0].link);
-    } else {
-      showKodikManual(a);
+  const title=a.title?.userPreferred||a.title?.romaji||'';
+  if(cfg.kTok){
+    const res=await kdkSearch(title);
+    if(res?.length){
+      const kr=document.getElementById('kRes');kr.style.display='block';
+      kr.innerHTML=res.map(r=>`<div class="ki" onclick="loadFr('${r.link}')"><b>📺 ${r.title||title}</b><span> · ${r.translation?.title||'Оригинал'}${r.episodes_count?' · '+r.episodes_count+' эп.':''}</span></div>`).join('');
+      loadFr(res[0].link);return;
     }
-  } else {
-    showKodikManual(a);
   }
+  const enc=encodeURIComponent(title);
+  document.getElementById('pBox').innerHTML=`<div class="pph"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><p>Добавьте Kodik токен в настройках<br>или вставьте ссылку вручную</p><a href="https://kodik.info" target="_blank">Найти на Kodik →</a></div>`;
+  document.getElementById('manBlk').style.display='block';
 }
-
-function showKodikManual(a){
-  document.getElementById('playerFrame').innerHTML=`
-    <div class="player-placeholder">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      <p>Добавьте Kodik токен в настройках,<br>или введите ссылку на плеер вручную</p>
-      <div class="player-input-group" style="width:100%">
-        <input class="player-input" id="manualPlayerUrl" placeholder="https://kodik.info/seria/..." value="">
-        <button class="btn btn-primary" style="flex:none;padding:10px" onclick="loadManualPlayer()">Загрузить</button>
-        <a href="https://kodik.info" target="_blank" style="color:var(--accent);font-size:12px;text-align:center">Найти на Kodik →</a>
-      </div>
-    </div>
-  `;
-}
-
-function loadKodikPlayer(url){
-  document.getElementById('playerFrame').innerHTML=`
-    <iframe src="${url}" allowfullscreen frameborder="0" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="origin"></iframe>
-  `;
-}
-
-function loadManualPlayer(){
-  const url=document.getElementById('manualPlayerUrl')?.value?.trim();
-  if(!url) return;
-  loadKodikPlayer(url);
-}
-
-function setPlayer(type){
-  activePlayer=type;
-  document.querySelectorAll('.player-tab').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
-  if(!currentAnime) return;
+function setPlayer(type,btn){
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('on'));btn.classList.add('on');
+  if(!curA)return;
   if(type==='cvh'){
-    // CVH embed - try by anime name search
-    const title=encodeURIComponent(currentAnime.russian||currentAnime.name);
-    document.getElementById('playerFrame').innerHTML=`
-      <div class="player-placeholder">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        <p>CVH плеер</p>
-        <div class="player-input-group" style="width:100%">
-          <input class="player-input" id="cvhUrl" placeholder="https://cvh.wtf/..." value="">
-          <button class="btn btn-primary" style="flex:none;padding:10px" onclick="loadCvhPlayer()">Загрузить</button>
-          <a href="https://cvh.wtf/?search=${title}" target="_blank" style="color:var(--accent);font-size:12px;text-align:center">Найти на CVH →</a>
-        </div>
-      </div>
-    `;
-    document.getElementById('kodikSearchBlock').style.display='none';
-  } else {
-    initPlayer(currentAnime);
+    const enc=encodeURIComponent(curA.title?.userPreferred||curA.title?.romaji||'');
+    document.getElementById('pBox').innerHTML=`<div class="pph"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><p>CVH плеер</p><a href="https://cvh.wtf/?search=${enc}" target="_blank">Найти на CVH →</a></div>`;
+    document.getElementById('kRes').style.display='none';document.getElementById('manBlk').style.display='block';
+  }else{document.getElementById('manBlk').style.display='none';initPlayer(curA);}
+}
+function loadFr(url){if(!url?.trim())return;document.getElementById('pBox').innerHTML=`<iframe src="${url.trim()}" allowfullscreen allow="autoplay;fullscreen" referrerpolicy="origin"></iframe>`;}
+
+/* ── CHAR ── */
+async function openC(id){
+  go('char');
+  document.getElementById('chNm').textContent='Загрузка...';
+  ['chOr','chDesc'].forEach(i=>document.getElementById(i).textContent='');
+  document.getElementById('chImg').src='';
+  document.getElementById('chAn').innerHTML='';
+  document.getElementById('chSplSec').style.display='none';
+  const d=await al(`query($id:Int){Character(id:$id){id name{full native}image{large}description(asHtml:false)media(perPage:5,sort:POPULARITY_DESC){nodes{id title{userPreferred}}}}}`,{id});
+  const c=d?.Character;if(!c){toast('Ошибка','err');return;}
+  curC=c;
+  document.getElementById('chImg').src=c.image?.large||'';
+  document.getElementById('chNm').textContent=c.name?.full||'—';
+  document.getElementById('chOr').textContent=c.name?.native||'';
+  if(c.media?.nodes?.length)document.getElementById('chAn').innerHTML=c.media.nodes.map(m=>`<span class="chac" onclick="openA(${m.id})">${m.title?.userPreferred||'?'}</span>`).join('');
+  const raw=(c.description||'').replace(/<[^>]+>/g,'');
+  const SPL=/~!([\s\S]+?)!~/g;
+  let spls=[];
+  const clean=raw.replace(SPL,(_,s)=>{spls.push(s.trim());return''}).trim();
+  document.getElementById('chDesc').textContent=clean||'Описание отсутствует.';
+  if(spls.length){
+    document.getElementById('chSplSec').style.display='';
+    document.getElementById('splBody').textContent=spls.join('\n\n');
+    document.getElementById('splBody').classList.remove('open');
+    document.getElementById('splArr').classList.remove('open');
   }
 }
+function toggleSpl(){document.getElementById('splBody').classList.toggle('open');document.getElementById('splArr').classList.toggle('open');}
 
-function loadCvhPlayer(){
-  const url=document.getElementById('cvhUrl')?.value?.trim();
-  if(!url) return;
-  loadKodikPlayer(url);
+/* ── SEE ALL ── */
+async function seeAll(type){
+  go('seeall');
+  const T={season:'🌸 Новинки сезона',top:'🏆 Топ рейтинга',ongoing:'🔄 Обновления'};
+  document.getElementById('saTitle').textContent=T[type]||'Аниме';
+  document.getElementById('saGr').innerHTML='<div class="spw" style="grid-column:1/-1"><div class="sp"></div></div>';
+  let q='',vars={};
+  if(type==='season'){q=`query($s:MediaSeason,$y:Int){Page(page:1,perPage:50){media(season:$s,seasonYear:$y,type:ANIME,sort:POPULARITY_DESC){id title{userPreferred romaji}coverImage{large extraLarge}averageScore format status episodes nextAiringEpisode{episode}}}}`;vars={s:CSN,y:CYR};}
+  else if(type==='top'){q=`query{Page(page:1,perPage:50){media(type:ANIME,sort:SCORE_DESC,format:TV){id title{userPreferred romaji}coverImage{large extraLarge}averageScore format episodes}}}`;}
+  else if(type==='ongoing'){q=`query{Page(page:1,perPage:50){media(type:ANIME,status:RELEASING,sort:POPULARITY_DESC){id title{userPreferred romaji}coverImage{large extraLarge}averageScore format episodes nextAiringEpisode{episode}}}}`;}
+  const d=await al(q,vars);
+  const k=Object.keys(d||{})[0];
+  document.getElementById('saGr').innerHTML=(d?.[k]?.media||[]).map(a=>cH(a)).join('')||'<div class="empty"><p>Нет данных</p></div>';
+}
+async function seeAllGenre(g){
+  go('seeall');
+  document.getElementById('saTitle').textContent='🏷️ '+g;
+  document.getElementById('saGr').innerHTML='<div class="spw" style="grid-column:1/-1"><div class="sp"></div></div>';
+  const d=await al(`query($g:[String]){Page(page:1,perPage:50){media(genre_in:$g,type:ANIME,sort:SCORE_DESC){id title{userPreferred romaji}coverImage{large extraLarge}averageScore format status episodes}}}`,{g:[g]});
+  document.getElementById('saGr').innerHTML=(d?.Page?.media||[]).map(a=>cH(a)).join('')||'<div class="empty"><p>Нет данных</p></div>';
 }
 
-function scrollToPlayer(){
-  document.getElementById('playersSection').scrollIntoView({behavior:'smooth'});
+/* ── FAVS ── */
+function toggleFav(){
+  if(!curA)return;
+  const idx=favs.findIndex(f=>f.id===curA.id);
+  if(idx>=0){favs.splice(idx,1);toast('Удалено из избранного','');}
+  else{favs.push({id:curA.id,name:curA.title?.userPreferred||curA.title?.romaji||'?',img:curA.coverImage?.large||'',sc:curA.averageScore});toast('⭐ Добавлено в избранное','ok');}
+  localStorage.setItem('as_f',JSON.stringify(favs));
+  updFavBtn();
+}
+function updFavBtn(){if(!curA)return;document.getElementById('favBtn').textContent=favs.some(f=>f.id===curA.id)?'💛 В избранном':'⭐ В избранное';}
+function renderFavs(){
+  const g=document.getElementById('favGr');
+  if(!favs.length){g.innerHTML='<div class="empty" style="grid-column:1/-1"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><p>Сохраняйте аниме здесь</p></div>';return;}
+  g.innerHTML=favs.map(a=>`<div class="ac" onclick="openA(${a.id})"><div class="acimg"><img src="${a.img}" alt="" onerror="this.style.opacity=0"><div class="acov"></div>${a.sc?`<div class="bdg bsc">⭐ ${(a.sc/10).toFixed(1)}</div>`:''}</div><div class="acttl">${a.name}</div></div>`).join('');
 }
 
-// ============================================================
-// CHARACTER DETAIL
-// ============================================================
-async function openChar(id){
-  showPage('char');
-  document.getElementById('charDetailName').textContent='Загрузка...';
-  document.getElementById('charDetailOrig').textContent='';
-  document.getElementById('charDetailImg').src='';
-  document.getElementById('charDesc').textContent='';
-  document.getElementById('charSpoilerSection').style.display='none';
-  document.getElementById('charDetailAnimes').innerHTML='';
-
-  const data=await gql(`
-    query($id:String!){
-      characters(ids:$id,limit:1){
-        id name russian japanese poster{mainUrl}
-        description descriptionHtml
-        animes{
-          anime{id name russian}
-          rolesRu
-        }
-      }
-    }
-  `,{id:String(id)});
-
-  const c=data?.characters?.[0];
-  if(!c) return;
-  currentChar=c;
-
-  document.getElementById('charDetailImg').src=IMG_BASE+(c.poster?.mainUrl||'');
-  document.getElementById('charDetailName').textContent=c.russian||c.name;
-  document.getElementById('charDetailOrig').textContent=[c.name,c.japanese].filter(Boolean).join(' / ');
-
-  // Anime appearances
-  if(c.animes?.length){
-    document.getElementById('charDetailAnimes').innerHTML=c.animes.slice(0,5).map(r=>`
-      <span class="char-anime-chip" onclick="openAnime(${r.anime?.id})">${r.anime?.russian||r.anime?.name||'?'}</span>
-    `).join('');
-  }
-
-  // Description + Spoilers
-  const desc=c.description||'';
-  const spoilerMark='[spoiler';
-  let mainDesc=desc;
-  let spoilerText='';
-
-  if(desc.includes(spoilerMark)){
-    const idx=desc.indexOf(spoilerMark);
-    mainDesc=desc.substring(0,idx).trim();
-    spoilerText=desc.substring(idx).trim();
-  }
-
-  document.getElementById('charDesc').textContent=mainDesc||'Описание отсутствует.';
-
-  if(spoilerText){
-    document.getElementById('charSpoilerSection').style.display='';
-    document.getElementById('spoilerContent').textContent=spoilerText.replace(/\[spoiler[^\]]*\]/g,'').replace(/\[\/spoiler\]/g,'');
-  }
+/* ── HELPERS ── */
+function cH(a){
+  const img=a.coverImage?.large||a.coverImage?.extraLarge||'';
+  const sc=a.averageScore?(a.averageScore/10).toFixed(1):null;
+  const ep=a.nextAiringEpisode?.episode;
+  return`<div class="ac" onclick="openA(${a.id})"><div class="acimg"><img src="${img}" alt="" loading="lazy" onerror="this.style.opacity=0"><div class="acov"></div>${sc?`<div class="bdg bsc">⭐ ${sc}</div>`:''}${ep&&a.status==='RELEASING'?`<div class="bdg bep">${ep} эп.</div>`:''}</div><div class="acttl">${a.title?.userPreferred||a.title?.romaji||'—'}</div><div class="acsub">${fmtFmt(a.format)}</div></div>`;
 }
-
-function toggleSpoiler(){
-  const content=document.getElementById('spoilerContent');
-  const arrow=document.getElementById('spoilerArrow');
-  content.classList.toggle('open');
-  arrow.classList.toggle('open');
+function cLgH(a){
+  const img=a.coverImage?.large||a.coverImage?.extraLarge||'';
+  const sc=a.averageScore?(a.averageScore/10).toFixed(1):null;
+  return`<div class="ac aclg" onclick="openA(${a.id})"><div class="acimg"><img src="${img}" alt="" loading="lazy" onerror="this.style.opacity=0"><div class="acov"></div>${sc?`<div class="bdg bsc">⭐ ${sc}</div>`:''}</div><div class="acttl">${a.title?.userPreferred||a.title?.romaji||'—'}</div><div class="acsub">${fmtFmt(a.format)}</div></div>`;
 }
+function fmtFmt(f){return{TV:'TV Сериал',TV_SHORT:'TV Short',MOVIE:'Фильм',OVA:'OVA',ONA:'ONA',SPECIAL:'Спецвыпуск',MUSIC:'Клип'}[f]||f||'—';}
+function fmtSt(s){return{FINISHED:'Завершён',RELEASING:'Онгоинг',NOT_YET_RELEASED:'Анонс',CANCELLED:'Отменён',HIATUS:'Пауза'}[s]||s||'—';}
+function fmtSsn(s){return{WINTER:'Зима',SPRING:'Весна',SUMMER:'Лето',FALL:'Осень'}[s]||s||'—';}
+function fmtSrc(s){return{MANGA:'Манга',ORIGINAL:'Оригинал',LIGHT_NOVEL:'Ранобэ',VISUAL_NOVEL:'VN',GAME:'Игра',NOVEL:'Роман',WEB_MANGA:'Веб-манга'}[s]||s||'—';}
+function fmtEp(a){const ep=a.nextAiringEpisode?.episode;if(ep)return`Эп. ${ep-1}/${a.episodes||'?'}`;return a.episodes?a.episodes+' эп.':'? эп.';}
+function fmtTm(d){return d.toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});}
+function fmtDt(d){return d.toLocaleDateString('ru',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});}
+function toggleDesc(){const e=document.getElementById('dDesc'),b=document.getElementById('rmBtn');e.classList.toggle('cl');b.textContent=e.classList.contains('cl')?'Читать полностью ↓':'Свернуть ↑';}
+function shareAnime(){if(!curA)return;const url=`https://anilist.co/anime/${curA.id}`;if(navigator.share)navigator.share({title:curA.title?.userPreferred||'',url});else navigator.clipboard?.writeText(url).then(()=>toast('Ссылка скопирована!','ok'));}
 
-// ============================================================
-// SEE ALL
-// ============================================================
-async function loadSeeAll(type, genre=''){
-  showPage('seeAll');
-  const titles={season:'Новинки сезона',top:'Топ-рейтинг',ongoing:'Все обновления',genre:'Жанр: '+genre};
-  document.getElementById('seeAllTitle').textContent=titles[type]||'Аниме';
-  document.getElementById('seeAllGrid').innerHTML=`<div class="loading-spinner" style="grid-column:1/-1"><div class="spinner"></div></div>`;
+/* ── SETTINGS ── */
+function openCfg(){document.getElementById('kTok').value=cfg.kTok||'';document.getElementById('cfgOv').classList.add('open');}
+function closeCfg(){document.getElementById('cfgOv').classList.remove('open');}
+function saveCfg(){cfg.kTok=document.getElementById('kTok').value.trim();localStorage.setItem('as_c',JSON.stringify(cfg));closeCfg();toast('Настройки сохранены ✓','ok');}
+function toast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast show ${type||''}`;setTimeout(()=>t.classList.remove('show'),2500);}
 
-  let q='';
-  if(type==='season') q=`query{animes(season:"${currentSeason}",limit:50,order:ranked){id name russian poster{mainUrl} score kind status episodesAired episodes}}`;
-  else if(type==='top') q=`query{animes(limit:50,order:ranked,kind:"tv"){id name russian poster{mainUrl} score kind status episodes}}`;
-  else if(type==='ongoing') q=`query{animes(status:"ongoing",limit:50,order:popularity){id name russian poster{mainUrl} score kind episodes episodesAired}}`;
-  else if(type==='genre') q=`query{animes(genre:${JSON.stringify(genre)},limit:50,order:ranked){id name russian poster{mainUrl} score kind status episodesAired episodes}}`;
-
-  const data=await gql(q);
-  const key=Object.keys(data||{})[0];
-  const animes=data?.[key]||[];
-  document.getElementById('seeAllGrid').innerHTML=animes.map(a=>animeCardHTML(a)).join('')||'<div class="search-empty"><p>Нет данных</p></div>';
-}
-
-// ============================================================
-// FAVORITES
-// ============================================================
-function toggleFavorite(){
-  if(!currentAnime) return;
-  const id=currentAnime.id;
-  const idx=favorites.findIndex(f=>f.id===id);
-  if(idx>=0){
-    favorites.splice(idx,1);
-    showToast('Удалено из избранного','');
-  } else {
-    favorites.push({id,name:currentAnime.russian||currentAnime.name,poster:IMG_BASE+(currentAnime.poster?.mainUrl||''),score:currentAnime.score});
-    showToast('Добавлено в избранное ⭐','success');
-  }
-  localStorage.setItem('anistream_favs',JSON.stringify(favorites));
-  updateFavBtn();
-  renderFavorites();
-}
-
-function updateFavBtn(){
-  if(!currentAnime) return;
-  const isFav=favorites.some(f=>f.id===currentAnime.id);
-  document.getElementById('favBtn').innerHTML=isFav?'💛 В избранном':'⭐ В избранное';
-}
-
-function renderFavorites(){
-  const list=document.getElementById('favoritesList');
-  if(!favorites.length){
-    list.innerHTML='<div class="search-empty"><p style="color:var(--text3)">Здесь будет ваше избранное</p></div>';
-    return;
-  }
-  list.innerHTML='<div class="search-results">'+favorites.map(a=>`
-    <div class="anime-card" onclick="openAnime(${a.id})">
-      <div class="anime-card-poster">
-        <img src="${a.poster}" alt="" onerror="this.style.opacity=0">
-        <div class="anime-card-score">⭐ ${a.score||'?'}</div>
-      </div>
-      <div class="anime-card-title">${a.name}</div>
-    </div>
-  `).join('')+'</div>';
-}
-
-// ============================================================
-// HELPERS
-// ============================================================
-function animeCardHTML(a){
-  const img=IMG_BASE+(a.poster?.mainUrl||'');
-  return `
-  <div class="anime-card" onclick="openAnime(${a.id})">
-    <div class="anime-card-poster">
-      <img src="${img}" alt="${a.russian||a.name}" loading="lazy" onerror="this.style.opacity=0">
-      ${a.score?`<div class="anime-card-score">⭐ ${a.score}</div>`:''}
-      ${a.status==='ongoing'?`<div class="anime-card-ep">${a.episodesAired||'?'} эп.</div>`:''}
-    </div>
-    <div class="anime-card-title">${a.russian||a.name}</div>
-    <div class="anime-card-sub">${kindLabel(a.kind)}</div>
-  </div>`;
-}
-
-function animeCardLgHTML(a){
-  const img=IMG_BASE+(a.poster?.mainUrl||'');
-  return `
-  <div class="anime-card anime-card-lg" onclick="openAnime(${a.id})">
-    <div class="anime-card-poster">
-      <img src="${img}" alt="${a.russian||a.name}" loading="lazy" onerror="this.style.opacity=0">
-      ${a.score?`<div class="anime-card-score">⭐ ${a.score}</div>`:''}
-    </div>
-    <div class="anime-card-title">${a.russian||a.name}</div>
-    <div class="anime-card-sub">${kindLabel(a.kind)}</div>
-  </div>`;
-}
-
-function renderStars(score){
-  const s=Math.round(score/2);
-  return Array(5).fill(0).map((_,i)=>`<span class="star" style="color:${i<s?'var(--gold)':'var(--text3)'}">${i<s?'★':'☆'}</span>`).join('');
-}
-
-function kindLabel(k){
-  const m={tv:'TV Сериал',movie:'Фильм',ova:'OVA',ona:'ONA',special:'Спецвыпуск',tv_special:'TV Спецвыпуск',music:'Клип',manga:'Манга'};
-  return m[k]||k||'—';
-}
-
-function statusLabel(s){
-  const m={ongoing:'Онгоинг',released:'Вышел',anons:'Анонс',paused:'Пауза',discontinued:'Закрыт'};
-  return m[s]||s||'—';
-}
-
-function fmtTime(d){
-  if(!d) return '';
-  return d.toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
-}
-
-function fmtDate(d){
-  if(!d) return '—';
-  return d.toLocaleDateString('ru',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
-}
-
-function toggleDesc(){
-  const el=document.getElementById('detailDesc');
-  const btn=document.getElementById('readMoreBtn');
-  el.classList.toggle('collapsed');
-  btn.textContent=el.classList.contains('collapsed')?'Читать полностью ↓':'Свернуть ↑';
-}
-
-function shareAnime(){
-  if(!currentAnime) return;
-  const url=`https://shikimori.one/animes/${currentAnime.id}`;
-  if(navigator.share){
-    navigator.share({title:currentAnime.russian||currentAnime.name,url});
-  } else {
-    navigator.clipboard.writeText(url).then(()=>showToast('Ссылка скопирована!','success'));
-  }
-}
-
-function showAllChars(){
-  if(!currentAnime?.characterRoles) return;
-  const all=currentAnime.characterRoles;
-  const grid=document.getElementById('charsGrid');
-  grid.innerHTML=all.map(r=>`
-    <div class="char-mini" onclick="openChar(${r.character?.id})">
-      <img src="${IMG_BASE}${r.character?.poster?.mainUrl||''}" alt="${r.character?.russian||r.character?.name||'?'}"
-        onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23222%22 width=%22100%22 height=%22100%22/><circle cx=%2250%22 cy=%2240%22 r=%2225%22 fill=%22%23444%22/></svg>'">
-      <div class="char-mini-name">${r.character?.russian||r.character?.name||'?'}</div>
-      <div class="char-mini-role">${r.rolesRu?.[0]||''}</div>
-    </div>
-  `).join('');
-}
-
-// ============================================================
-// SETTINGS
-// ============================================================
-function openSettings(){
-  document.getElementById('kodikToken').value=settings.kodikToken||'';
-  document.getElementById('defaultQuality').value=settings.defaultQuality||'720';
-  document.getElementById('settingsModal').classList.add('open');
-}
-
-function closeSettings(e){
-  if(e.target===document.getElementById('settingsModal'))
-    document.getElementById('settingsModal').classList.remove('open');
-}
-
-function saveSettings(){
-  settings.kodikToken=document.getElementById('kodikToken').value.trim();
-  settings.defaultQuality=document.getElementById('defaultQuality').value;
-  localStorage.setItem('anistream_settings',JSON.stringify(settings));
-  document.getElementById('settingsModal').classList.remove('open');
-  showToast('Настройки сохранены ✓','success');
-}
-
-function showToast(msg,type){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.className=`toast show ${type||''}`;
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-// ============================================================
-// NAV SEARCH HANDLER
-// ============================================================
-document.getElementById('navSearch').addEventListener('input',e=>{
+/* ── INPUT HANDLER ── */
+document.getElementById('navQ').addEventListener('input',e=>{
   const q=e.target.value.trim();
-  clearTimeout(searchTimer);
-  if(q.length<2){
-    if(document.getElementById('searchPage').classList.contains('active')){
-      document.getElementById('searchResults').innerHTML=`<div class="search-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Введите запрос для поиска</p></div>`;
-    }
-    return;
-  }
-  if(!document.getElementById('searchPage').classList.contains('active')){
-    showPage('search');
-    setActive('search');
-  }
-  searchTimer=setTimeout(()=>doSearch(q),400);
+  clearTimeout(sTimer);
+  if(!document.getElementById('pg-search').classList.contains('on'))go('search');
+  if(q.length<2){document.getElementById('rg').innerHTML=`<div class="empty"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Введите запрос для поиска</p></div>`;return;}
+  sTimer=setTimeout(()=>doSearch(q),450);
 });
 
-document.getElementById('navSearch').addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    const q=e.target.value.trim();
-    if(q) doSearch(q);
-  }
-});
-
-// ============================================================
-// INIT
-// ============================================================
-document.addEventListener('DOMContentLoaded',()=>{
-  loadHome();
-  renderFavorites();
-
-  // Prefetch schedule when tab clicked
-  document.getElementById('btn-schedule').addEventListener('click',()=>{
-    loadSchedule();
-  });
-});
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',()=>loadHome());
 </script>
 </body>
 </html>
